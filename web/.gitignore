@@ -1,0 +1,5 @@
+public_html/data
+public_html/bower_components
+public_html/lib/*/*
+public_html/data/*
+nbproject/private
