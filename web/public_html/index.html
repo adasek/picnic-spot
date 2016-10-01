@@ -114,6 +114,16 @@
                         });
                     },
                     function (layerArray, done) {
+                        var area = new PointLayer({
+                            "name": "Pitná voda",
+                            "file": "data/drinking_water.gpx",
+                            "type": "gpx"
+                        }, function () {
+                            layerArray.push(area);
+                            done(null, layerArray);
+                        });
+                    },
+                    function (layerArray, done) {
                         //final function
                         console.log("yay" + layerArray.length);
 
