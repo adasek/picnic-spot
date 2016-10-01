@@ -23,14 +23,14 @@ var Layer = function () {
  * @param {function} cb
  * @returns {undefined}
  */
-Layer.prototype.download = function (geojsonFilename, propertyName, cb) {
-    this._downloadCb = cb;
+Layer.prototype.download = function (filename, propertyName, cb) {
+    this._downloadCB = cb;
     this._downloadProperty = propertyName;
 
     var xhttp = new XMLHttpRequest();
     var th = this;
 
-    xhttp.open("GET", geojsonFilename, true);
+    xhttp.open("GET", filename, true);
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             th.downloadFinished.bind(th)(this.responseText);
@@ -48,8 +48,17 @@ Layer.prototype.download = function (geojsonFilename, propertyName, cb) {
  */
 Layer.prototype.downloadFinished = function (responseText) {
     try {
-        this[this._downloadProperty] = JSON.parse(responseText);
-        this._downloadCb(null, this);
+        if (this.type === "gpx") {
+            this[this._downloadProperty] = responseText;
+            this.features = (new ol.format.GPX()).readFeatures(this[this._downloadProperty], {featureProjection: 'EPSG:3857'});
+     
+        } else {
+            //GeoJSON
+            this[this._downloadProperty] = JSON.parse(responseText);
+
+            this.features = (new ol.format.GeoJSON()).readFeatures(this[this._downloadProperty], {featureProjection: 'EPSG:3857'});
+        }
+        this._downloadCB(null, this);
     } catch (e) {
         console.error(e);
         console.error(JSON.stringify(e));

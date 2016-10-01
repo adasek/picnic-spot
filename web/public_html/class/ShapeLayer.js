@@ -53,10 +53,6 @@ ShapeLayer.prototype = Object.create(Layer.prototype);
  */
 ShapeLayer.prototype.getVector = function () {
 
-
-    //convert geojson
-    this.features = (new ol.format.GeoJSON()).readFeatures(this.geojson, {featureProjection: 'EPSG:3857'});
-
     var minMax = this.getMinMax(this.propertyName);
 
     for (var i = 0; i < this.features.length; i++) {

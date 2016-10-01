@@ -10,6 +10,7 @@
         <script src="lib/async/async.min.js"></script>   
         <script src="class/Layer.js"></script>    
         <script src="class/ShapeLayer.js"></script>   
+        <script src="class/PointLayer.js"></script>   
 
         <style type="text/css">
             #popup > div {
@@ -69,12 +70,23 @@
                             done(null, [lightArea]);
                         });
                     },
+                    /*
+                     function (layerArray, done) {
+                     var area = new ShapeLayer({
+                     "name": "Traffic noise",
+                     "file": "data/HM_Ekola_ADP_pasma_den_p_shp/data.geojson",
+                     "property": "DB_HI"
+                     }, function () {
+                     layerArray.push(area);
+                     done(null, layerArray);
+                     });
+                     },
+                     */
                     function (layerArray, done) {
-                        //todo:push another downloaded area
-                        var area = new ShapeLayer({
-                            "name": "Traffic noise",
-                            "file": "data/HM_Ekola_ADP_pasma_den_p_shp/data.geojson",
-                            "property": "DB_HI"
+                        var area = new PointLayer({
+                            "name": "NaturalSpring",
+                            "file": "data/studanky.gpx",
+                            "type": "gpx"
                         }, function () {
                             layerArray.push(area);
                             done(null, layerArray);
@@ -128,18 +140,11 @@
                         });
 
                         for (var i = 0; i < layerArray.length; i++) {
-                            //for every layer
-                            //map.addLayer(layerArray[i].getVector(colorScaleStrFunc));
+                            if (layerArray[i].type === "gpx") {
+                                map.addLayer(layerArray[i].getVector());
+                            }
                         }
 
-                        setTimeout(function () {
-                            console.log(
-                                    layerArray[0].getValueAt(ol.proj.transform([14.52301, 50.1083], 'EPSG:4326', 'EPSG:3857'))
-                                    );
-                            console.log(
-                                    layerArray[1].getValueAt(ol.proj.transform([14.52301, 50.1083], 'EPSG:4326', 'EPSG:3857'))
-                                    );
-                        }, 200);
 
 
 
@@ -147,7 +152,9 @@
                             var coordinate = evt.coordinate;
                             var text = "";
                             for (var i = 0; i < layerArray.length; i++) {
-                                text += layerArray[i].report(layerArray[i].getValueAt(coordinate));
+                                if (typeof layerArray[i].getValueAt === "function") {
+                                    text += layerArray[i].report(layerArray[i].getValueAt(coordinate));
+                                }
                             }
                             alert(text);
                         });
