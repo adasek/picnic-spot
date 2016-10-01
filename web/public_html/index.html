@@ -60,154 +60,144 @@
 
             function init() {
 
-                async.waterfall([
-                    function (done) {
-                        var lightArea = new ShapeLayer({
-                            "name": "Sun intensity",
-                            "file": "data/OVZ_Klima_Osluneni_p.json",
-                            "property": "GRIDVALUE"
-                        }, function () {
-                            done(null, [lightArea]);
-                        });
+                var layersSrc = [
+                    {
+                        "class": "ShapeLayer",
+                        "name": "Sun intensity",
+                        "file": "data/OVZ_Klima_Osluneni_p.json",
+                        "property": "GRIDVALUE"
+                    }, {
+                        "class": "PointLayer",
+                        "name": "studánka",
+                        "file": "data/studanky.gpx",
+                        "type": "gpx",
+                        "poiIco": "icons/nicubunu-RPG-map-symbols-Wishing-Well-2-300px.png"
+                    }, {
+                        "class": "PointLayer",
+                        "name": "ohniště",
+                        "file": "data/ohniste.gpx",
+                        "type": "gpx"
+                    }, {
+                        "class": "PointLayer",
+                        "name": "grill",
+                        "file": "data/grilly.gpx",
+                        "type": "gpx"
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Pitná voda",
+                        "file": "data/drinking_water.gpx",
+                        "type": "gpx"
                     },
                     /*
-                     function (layerArray, done) {
-                     var area = new ShapeLayer({
+                     /*
+                     //Typical client does not want a 150MB file
+                     {      class: "ShapeLayer",
                      "name": "Traffic noise",
                      "file": "data/HM_Ekola_ADP_pasma_den_p_shp/data.geojson",
                      "property": "DB_HI"
-                     }, function () {
-                     layerArray.push(area);
-                     done(null, layerArray);
-                     });
                      },
                      */
-                    function (layerArray, done) {
-                        var area = new PointLayer({
-                            "name": "studánka",
-                            "file": "data/studanky.gpx",
-                            "type": "gpx",
-                            "poiIco":"icons/nicubunu-RPG-map-symbols-Wishing-Well-2-300px.png"
-                        }, function () {
-                            layerArray.push(area);
-                            done(null, layerArray);
-                        });
-                    },
-                    function (layerArray, done) {
-                        var area = new PointLayer({
-                            "name": "ohniště",
-                            "file": "data/ohniste.gpx",
-                            "type": "gpx"
-                        }, function () {
-                            layerArray.push(area);
-                            done(null, layerArray);
-                        });
-                    },
-                    function (layerArray, done) {
-                        var area = new PointLayer({
-                            "name": "grill",
-                            "file": "data/grilly.gpx",
-                            "type": "gpx"
-                        }, function () {
-                            layerArray.push(area);
-                            done(null, layerArray);
-                        });
-                    },
-                    function (layerArray, done) {
-                        var area = new PointLayer({
-                            "name": "Pitná voda",
-                            "file": "data/drinking_water.gpx",
-                            "type": "gpx"
-                        }, function () {
-                            layerArray.push(area);
-                            done(null, layerArray);
-                        });
-                    },
-                    function (layerArray, done) {
-                        //final function
-                        console.log("yay" + layerArray.length);
 
-                        //RENDERING THE MAP
-
-                        var projection = ol.proj.get('EPSG:900913');
-                        var projExtent = projection.getExtent();
-                        var startResolution = ol.extent.getWidth(projExtent) / 256;
-                        var resolutions = new Array(22);
-                        for (var i = 0, ii = resolutions.length; i < ii; ++i) {
-                            resolutions[i] = startResolution / Math.pow(2, i);
-                        }
+                ];
 
 
-
-                        var tl = ol.proj.transform([14, 49], 'EPSG:4326', 'EPSG:900913');
-                        var br = ol.proj.transform([15, 51], 'EPSG:4326', 'EPSG:900913');
-                        var layers = new Array();
-                        /* default OSM layer */
-                        layers.push(new ol.layer.Tile({
-                            source: new ol.source.OSM({
-                                params: {},
-                                name: "OSM tiles from public server"
-                            })
-                        })
-                                );
-
-                        map = new ol.Map({
-                            controls: ol.control.defaults({
-                                attributionOptions: ({
-                                    collapsible: false
-                                })
-                            }).extend([
-                                new ol.control.FullScreen()
-                            ]),
-                            layers: [layers[0]],
-                            target: 'map',
-                            view: new ol.View({
-                                center: ol.proj.transform([14.52301, 50.1083], 'EPSG:4326', 'EPSG:3857'),
-                                extent: [tl[0], tl[1], br[0], br[1]],
-                                zoom: 15,
-                                minZoom: 12,
-                                maxZoom: 19
-                            })
-                        });
-
-                        for (var i = 0; i < layerArray.length; i++) {
-                            if (layerArray[i].type === "gpx") {
-                                map.addLayer(layerArray[i].getVector());
-                            }
-                        }
+                myLayers = [];
+                for (var i = 0; i < layersSrc.length; i++) {
+                    myLayers.push(function (done) {
+                        var area = new window[this.class](
+                                this, function () {
+                                    done(null, area);
+                                });
+                    }.bind(layersSrc[i]));
+                }
 
 
+                async.parallel(myLayers, function (err, layerArray) {
 
+                    //final function
+                    console.log("yay" + layerArray.length);
 
-                        map.on('click', function (evt) {
-                            var coordinate = evt.coordinate;
-                            var text = "";
-                            for (var i = 0; i < layerArray.length; i++) {
-                                if (typeof layerArray[i].getValueAt === "function") {
-                                    text += layerArray[i].report(coordinate);
-                                } else if (typeof layerArray[i].getNearest === "function") {
-                                    text += layerArray[i].report(coordinate);
-                                }
-                            }
-                            alert(text);
-                        });
+                    //RENDERING THE MAP
 
-                        //map.addLayer(vector);
-
-                        /* http://openlayers.org/en/master/examples/popup.html */
-                        popup = new ol.Overlay({
-                            element: document.getElementById('popup'),
-                            position: ol.proj.fromLonLat([14.52301, 50.1083]),
-                            positioning: "top-center"
-                        }
-                        );
-                        map.addOverlay(popup);
-
-
-                        done();
+                    var projection = ol.proj.get('EPSG:900913');
+                    var projExtent = projection.getExtent();
+                    var startResolution = ol.extent.getWidth(projExtent) / 256;
+                    var resolutions = new Array(22);
+                    for (var i = 0, ii = resolutions.length; i < ii; ++i) {
+                        resolutions[i] = startResolution / Math.pow(2, i);
                     }
-                ]);
-            }
+
+
+
+                    var tl = ol.proj.transform([14, 49], 'EPSG:4326', 'EPSG:900913');
+                    var br = ol.proj.transform([15, 51], 'EPSG:4326', 'EPSG:900913');
+                    var layers = new Array();
+                    /* default OSM layer */
+                    layers.push(new ol.layer.Tile({
+                        source: new ol.source.OSM({
+                            params: {},
+                            name: "OSM tiles from public server"
+                        })
+                    })
+                            );
+
+                    map = new ol.Map({
+                        controls: ol.control.defaults({
+                            attributionOptions: ({
+                                collapsible: false
+                            })
+                        }).extend([
+                            new ol.control.FullScreen()
+                        ]),
+                        layers: [layers[0]],
+                        target: 'map',
+                        view: new ol.View({
+                            center: ol.proj.transform([14.52301, 50.1083], 'EPSG:4326', 'EPSG:3857'),
+                            extent: [tl[0], tl[1], br[0], br[1]],
+                            zoom: 15,
+                            minZoom: 12,
+                            maxZoom: 19
+                        })
+                    });
+
+                    for (var i = 0; i < layerArray.length; i++) {
+                        if (layerArray[i].type === "gpx") {
+                            map.addLayer(layerArray[i].getVector());
+                        }
+                    }
+
+
+
+
+                    map.on('click', function (evt) {
+                        var coordinate = evt.coordinate;
+                        var text = "";
+                        for (var i = 0; i < layerArray.length; i++) {
+                            if (typeof layerArray[i].getValueAt === "function") {
+                                text += layerArray[i].report(coordinate);
+                            } else if (typeof layerArray[i].getNearest === "function") {
+                                text += layerArray[i].report(coordinate);
+                            }
+                        }
+                        alert(text);
+                    });
+
+                    //map.addLayer(vector);
+
+                    /* http://openlayers.org/en/master/examples/popup.html */
+                    popup = new ol.Overlay({
+                        element: document.getElementById('popup'),
+                        position: ol.proj.fromLonLat([14.52301, 50.1083]),
+                        positioning: "top-center"
+                    }
+                    );
+                    map.addOverlay(popup);
+
+                }
+                );
+
+            } //end of init
+
             /*  ]]> */
         </script>
 
