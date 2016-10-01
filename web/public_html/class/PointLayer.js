@@ -56,21 +56,26 @@ PointLayer.prototype.downloadGPXfinished = function (err, result) {
 PointLayer.prototype.getVector = function () {
 
 
-
     for (var i = 0; i < this.features.length; i++) {
 
         this.features[i].setStyle(
                 new ol.style.Style({
-                    image: new ol.style.Circle({
-                        fill: new ol.style.Fill({
-                            color: 'rgba(255,0,0,1)'
-                        }),
-                        radius: 20,
-                        stroke: new ol.style.Stroke({
-                            color: '#ffffff',
-                            width: 5
-                        })
+                    image: new ol.style.Icon({src: "icons/nicubunu-RPG-map-symbols-Wishing-Well-2-300px.png",
+                        size: [300, 300],
+                        scale:0.33,
                     })
+                            /*
+                             * new ol.style.Circle({
+                             fill: new ol.style.Fill({
+                             color: 'rgba(255,0,0,1)'
+                             }),
+                             radius: 20,
+                             stroke: new ol.style.Stroke({
+                             color: '#ffffff',
+                             width: 5
+                             })
+                             })
+                             */
                 }));
     }
 
