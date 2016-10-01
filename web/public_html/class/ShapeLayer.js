@@ -17,8 +17,10 @@
  * @returns {ShapeLayer} initialized structure bind to DOM 
  */
 
-var ShapeLayer = function (geojsonFilename, cb) {
+var ShapeLayer = function (geojsonFilename, propertyName, cb) {
     Layer.call(this);
+    
+    this.propertyName = propertyName;
 
     this.geojson = {};
 
@@ -34,20 +36,19 @@ ShapeLayer.prototype = Object.create(Layer.prototype);
  * Return whole layer with colors adjusted according to feature property
  * and given colorScale
  * 
- * @param{string} propertyName - Such as "GRIDVALUE"
  * @param {function} colorScale - color scale for (0..1)
  * @returns {ol.Vector}
  */
-ShapeLayer.prototype.getVector = function (propertyName, colorScaleStr) {
+ShapeLayer.prototype.getVector = function (colorScaleStr) {
 
 
     //convert geojson
     this.features = (new ol.format.GeoJSON()).readFeatures(this.geojson, {featureProjection: 'EPSG:3857'});
 
-    this.normalizeProperty(this.features, propertyName);
+    this.normalizeProperty(this.features);
 
     for (var i = 0; i < this.features.length; i++) {
-        var gValue = this.features[i].get(propertyName);
+        var gValue = this.features[i].get(this.propertyName);
         var colorString = colorScaleStr(gValue);
 
         this.features[i].setStyle(
@@ -57,7 +58,7 @@ ShapeLayer.prototype.getVector = function (propertyName, colorScaleStr) {
     }
 
 
-    var vectorSource = new ol.source.Vector({
+    this.vectorSource = new ol.source.Vector({
         features: this.features,
         format: new ol.format.GeoJSON()
     });
@@ -65,20 +66,34 @@ ShapeLayer.prototype.getVector = function (propertyName, colorScaleStr) {
 
 
     var vector = new ol.layer.Vector({
-        source: vectorSource
+        source: this.vectorSource
     });
     return vector;
 
 };
 
+/**
+ *  */
+ShapeLayer.prototype.getValueAt = function (coordinate) {
+    var features = this.vectorSource.getFeaturesAtCoordinate(coordinate)
+    //test: highlight this feature
+    features[0].setStyle(
+            new ol.style.Style({
+                fill: new ol.style.Fill({"color": "#0000ff"})
+            }));
+
+    return features[0].get(this.propertyName);
+};
+
+
 /* */
-ShapeLayer.prototype.normalizeProperty = function (features, propertyName) {
+ShapeLayer.prototype.normalizeProperty = function (features) {
     var gValue;
     var max = -999;
     var min = 999;
 
     for (var i = 0; i < features.length; i++) {
-        gValue = features[i].get(propertyName);
+        gValue = features[i].get(this.propertyName);
         if (gValue > max) {
             max = gValue;
         }
@@ -90,7 +105,7 @@ ShapeLayer.prototype.normalizeProperty = function (features, propertyName) {
     //normalize
 
     for (var i = 0; i < features.length; i++) {
-        gValue = features[i].get(propertyName);
-        features[i].set(propertyName, (gValue - min) / (max - min));
+        gValue = features[i].get(this.propertyName);
+        features[i].set(this.propertyName, (gValue - min) / (max - min));
     }
 };

@@ -54,7 +54,16 @@
             /* <![CDATA[ */
 
             var colorScaleFunc = function (index) {
-                var myScale = {0: [255, 0, 0, 1], 1: [100, 255, 0, 1]};
+                /* //jet
+                var myScale = {
+                    0: [0, 0, 131],
+                    0.125: [0, 60, 170],
+                    0.375: [5, 255, 255],
+                    0.625: [255, 255, 0],
+                    0.875: [250, 0, 0],
+                    1: [128, 0, 0]};
+                    */
+                var myScale = {0: [0, 0, 0, 1], 1: [255, 255, 0, 1]};
                 var lastP = 0;
                 for (var p in myScale) {
                     if (lastP <= index && p >= index) {
@@ -95,7 +104,7 @@
 
                 async.waterfall([
                     function (done) {
-                        var lightArea = new ShapeLayer("data/OVZ_Klima_Osluneni_p.json", function () {
+                        var lightArea = new ShapeLayer("data/OVZ_Klima_Osluneni_p.json","GRIDVALUE", function () {
                             done(null, [lightArea]);
                         });
                     },
@@ -153,8 +162,14 @@
 
                         for (var i = 0; i < layerArray.length; i++) {
                             //for every layer
-                            map.addLayer(layerArray[i].getVector("GRIDVALUE", colorScaleStrFunc));
+                            map.addLayer(layerArray[i].getVector(colorScaleStrFunc));
                         }
+
+                        setTimeout(function () {
+                            console.log(
+                                    layerArray[0].getValueAt(ol.proj.transform([14.52301, 50.1083], 'EPSG:4326', 'EPSG:3857'))
+                                    );
+                        }, 20000);
 
                         //map.addLayer(vector);
 
@@ -179,6 +194,6 @@
     <body onload="init();">    
 
         <div id="map" class="map"></div>
-        <div id="popup">Hi world</div>
+        <div id="popup"></div>
     </body>
 </html>
