@@ -31,34 +31,34 @@ ShapeLayer.prototype = Object.create(Layer.prototype);
 
 
 /*
- * Return whole layer
+ * Return whole layer with colors adjusted according to feature property
+ * and given colorScale
+ * 
+ * @param{string} propertyName - Such as "GRIDVALUE"
+ * @param {function} colorScale - color scale for (0..1)
  * @returns {ol.Vector}
  */
-ShapeLayer.prototype.getVector = function () {
+ShapeLayer.prototype.getVector = function (propertyName, colorScaleStr) {
 
 
-    //cocnvert geojson
-    var features = (new ol.format.GeoJSON()).readFeatures(this.geojson, {featureProjection: 'EPSG:3857'});
+    //convert geojson
+    this.features = (new ol.format.GeoJSON()).readFeatures(this.geojson, {featureProjection: 'EPSG:3857'});
 
-    for (var i = 0; i < features.length; i++) {
-        var gValue = features[i].get("GRIDVALUE");
-        var color = "#333333";
-        if (gValue === 1) {
-            color = "#0000ff";
-        } else {
-            color = "#ff0000";
-        }
+    this.normalizeProperty(this.features, propertyName);
 
-        features[i].setStyle(
+    for (var i = 0; i < this.features.length; i++) {
+        var gValue = this.features[i].get(propertyName);
+        var colorString = colorScaleStr(gValue);
+
+        this.features[i].setStyle(
                 new ol.style.Style({
-                    fill: new ol.style.Fill({"color": color})
+                    fill: new ol.style.Fill({"color": colorString})
                 }));
     }
 
 
     var vectorSource = new ol.source.Vector({
-        url: 'data/OVZ_Klima_Osluneni_p.json',
-        features: features,
+        features: this.features,
         format: new ol.format.GeoJSON()
     });
 
@@ -71,3 +71,26 @@ ShapeLayer.prototype.getVector = function () {
 
 };
 
+/* */
+ShapeLayer.prototype.normalizeProperty = function (features, propertyName) {
+    var gValue;
+    var max = -999;
+    var min = 999;
+
+    for (var i = 0; i < features.length; i++) {
+        gValue = features[i].get(propertyName);
+        if (gValue > max) {
+            max = gValue;
+        }
+        if (gValue < min) {
+            min = gValue;
+        }
+    }
+
+    //normalize
+
+    for (var i = 0; i < features.length; i++) {
+        gValue = features[i].get(propertyName);
+        features[i].set(propertyName, (gValue - min) / (max - min));
+    }
+};

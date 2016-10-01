@@ -53,6 +53,40 @@
         <script type="text/javascript">
             /* <![CDATA[ */
 
+            var colorScaleFunc = function (index) {
+                var myScale = {0: [255, 0, 0, 1], 1: [100, 255, 0, 1]};
+                var lastP = 0;
+                for (var p in myScale) {
+                    if (lastP <= index && p >= index) {
+                        //do linear interpolation
+                        var ret = [0, 0, 0, 0];
+                        for (var n = 0; n < 4; n++) {
+                            ret[n] = myScale[lastP][n] + ((index - lastP) / (p - lastP)) * (myScale[p][n] - myScale[lastP][n]);
+                        }
+                        return ret;
+                    }
+                    lastP = p;
+                }
+                console.err("Color scale failed; index " + index + "not between 0..1");
+                throw "color scale failed";
+            };
+
+
+            colorCache = {};
+            var colorScaleStrFunc = function (gValue) {
+                if (colorCache[gValue] !== undefined) {
+                    return colorCache[gValue];
+                }
+
+                var colorArray = colorScaleFunc(gValue);
+                var colorString = "#";
+                for (var i = 0; i < 3; i++) {
+                    var cc = colorArray[i].toString(16);
+                    colorString += ("00" + cc).substring(2 + cc.length - 2);
+                }
+                colorCache[gValue] = colorString;
+                return colorString;
+            };
 
             var map;
 
@@ -61,8 +95,8 @@
 
                 async.waterfall([
                     function (done) {
-                        var lightArea = new ShapeLayer("data/OVZ_Klima_Osluneni_p.json", function(){
-                            done(null,[lightArea]);
+                        var lightArea = new ShapeLayer("data/OVZ_Klima_Osluneni_p.json", function () {
+                            done(null, [lightArea]);
                         });
                     },
                     function (layerArray, done) {
@@ -119,8 +153,7 @@
 
                         for (var i = 0; i < layerArray.length; i++) {
                             //for every layer
-                            map.addLayer(layerArray[i].getVector());
-
+                            map.addLayer(layerArray[i].getVector("GRIDVALUE", colorScaleStrFunc));
                         }
 
                         //map.addLayer(vector);
