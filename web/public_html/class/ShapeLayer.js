@@ -19,7 +19,7 @@
 
 var ShapeLayer = function (geojsonFilename, propertyName, cb) {
     Layer.call(this);
-    
+
     this.propertyName = propertyName;
 
     this.geojson = {};
@@ -75,6 +75,12 @@ ShapeLayer.prototype.getVector = function (colorScaleStr) {
 /**
  *  */
 ShapeLayer.prototype.getValueAt = function (coordinate) {
+    if (this.vectorSource === null || this.vectorSource === undefined) {
+        this.getVector(function () {
+            return [0, 0, 0, 0];
+        });
+    }
+
     var features = this.vectorSource.getFeaturesAtCoordinate(coordinate)
     //test: highlight this feature
     features[0].setStyle(
@@ -103,6 +109,7 @@ ShapeLayer.prototype.normalizeProperty = function (features) {
     }
 
     //normalize
+    console.log(min + ".." + max);
 
     for (var i = 0; i < features.length; i++) {
         gValue = features[i].get(this.propertyName);
