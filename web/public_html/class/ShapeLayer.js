@@ -177,11 +177,11 @@ ShapeLayer.prototype.colorScaleStr = function (gValue, minMax) {
 
 /**
  * 
+ * @param {number []} coordinate - two numbers
  * @returns {undefined}
  */
-ShapeLayer.prototype.report = function (v) {
+ShapeLayer.prototype.report = function (coordinate) {
+    var v = this.getValueAt(coordinate);
     this.getMinMax(this.propertyName);
-    return this.name + " value is " + v + " out of " + this.minMax[1]+"\n";
-
-
+    return this.name + " value is " + v + " out of " + this.minMax[1] + "\n";
 };

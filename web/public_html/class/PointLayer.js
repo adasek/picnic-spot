@@ -62,7 +62,7 @@ PointLayer.prototype.getVector = function () {
                 new ol.style.Style({
                     image: new ol.style.Icon({src: "icons/nicubunu-RPG-map-symbols-Wishing-Well-2-300px.png",
                         size: [300, 300],
-                        scale:0.33,
+                        scale: 0.33,
                     })
                             /*
                              * new ol.style.Circle({
@@ -88,4 +88,48 @@ PointLayer.prototype.getVector = function () {
     });
 
     return vector;
+};
+
+/**
+ * Return nearest Point
+ * @param {number[]} location - as two numbers
+ * @returns {Object}
+ */
+PointLayer.prototype.getNearest = function (location) {
+    var pointA = new ol.geom.Point(location);
+    pointA = ol.proj.transform(pointA.getCoordinates(), 'EPSG:3857', 'EPSG:4326');
+    var sphere = new ol.Sphere(6378137);
+
+    var pointB = (this.features[0].getGeometry()).getCoordinates();
+    pointB = ol.proj.transform(pointB, 'EPSG:3857', 'EPSG:4326');
+    var minDistance = sphere.haversineDistance(pointB, pointA);
+
+    var index = 0;
+    for (var i = 1; i <= this.features.length - 1; i++) {
+        pointB = this.features[i].getGeometry().getCoordinates();
+        pointB = ol.proj.transform(pointB, 'EPSG:3857', 'EPSG:4326');
+        var dist = sphere.haversineDistance(pointB, pointA);
+        if (dist < minDistance) {
+            index = i;
+            minDistance = dist;
+        }
+    }
+
+    return {
+        "distance": minDistance,
+        "location": this.features[index],
+        "feature": this.features[index]
+    };
+
+};
+
+
+/**
+ * Create a human readable string about distance of this kind
+ * @param {number []} coordinate - two numbers
+ * @returns {string}
+ */
+PointLayer.prototype.report = function (coordinate) {
+    var nearest = this.getNearest(coordinate);
+    return "Nearest " + this.name + " is " + Math.round(nearest.distance) + "m\n";
 };

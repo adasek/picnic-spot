@@ -57,9 +57,6 @@
 
             var map;
 
-            
-            icons=new Icons();
-
 
             function init() {
 
@@ -156,7 +153,9 @@
                             var text = "";
                             for (var i = 0; i < layerArray.length; i++) {
                                 if (typeof layerArray[i].getValueAt === "function") {
-                                    text += layerArray[i].report(layerArray[i].getValueAt(coordinate));
+                                    text += layerArray[i].report(coordinate);
+                                } else if (typeof layerArray[i].getNearest === "function") {
+                                    text += layerArray[i].report(coordinate);
                                 }
                             }
                             alert(text);
