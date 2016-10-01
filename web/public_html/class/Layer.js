@@ -52,6 +52,7 @@ Layer.prototype.downloadFinished = function (responseText) {
         this._downloadCb(null, this);
     } catch (e) {
         console.error(e);
-        console.error(responseText);
+        console.error(JSON.stringify(e));
+        //console.error(responseText);
     }
 };
