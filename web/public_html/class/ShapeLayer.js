@@ -183,5 +183,5 @@ ShapeLayer.prototype.colorScaleStr = function (gValue, minMax) {
 ShapeLayer.prototype.report = function (coordinate) {
     var v = this.getValueAt(coordinate);
     this.getMinMax(this.propertyName);
-    return this.name + " value is " + v + " out of " + this.minMax[1] + "\n";
+    return this.name + " je " + v + " z " + this.minMax[1] + "\n";
 };

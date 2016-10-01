@@ -84,8 +84,29 @@
                      */
                     function (layerArray, done) {
                         var area = new PointLayer({
-                            "name": "NaturalSpring",
+                            "name": "studánka",
                             "file": "data/studanky.gpx",
+                            "type": "gpx",
+                            "poiIco":"icons/nicubunu-RPG-map-symbols-Wishing-Well-2-300px.png"
+                        }, function () {
+                            layerArray.push(area);
+                            done(null, layerArray);
+                        });
+                    },
+                    function (layerArray, done) {
+                        var area = new PointLayer({
+                            "name": "ohniště",
+                            "file": "data/ohniste.gpx",
+                            "type": "gpx"
+                        }, function () {
+                            layerArray.push(area);
+                            done(null, layerArray);
+                        });
+                    },
+                    function (layerArray, done) {
+                        var area = new PointLayer({
+                            "name": "grill",
+                            "file": "data/grilly.gpx",
                             "type": "gpx"
                         }, function () {
                             layerArray.push(area);

@@ -3,7 +3,7 @@
  */
 
 
-/* global Layer */
+/* global Layer, ol */
 
 /**
  * PointLayer is a set of Points of interests of a specied type (e.g. Restaurants)
@@ -21,6 +21,8 @@ var PointLayer = function (opts, cb) {
 
     this.propertyName = opts.property;
     this.name = opts.name;
+
+    this.poiIco = opts.poiIco;
 
     this.gpx = null;
 
@@ -58,25 +60,32 @@ PointLayer.prototype.getVector = function () {
 
     for (var i = 0; i < this.features.length; i++) {
 
-        this.features[i].setStyle(
-                new ol.style.Style({
-                    image: new ol.style.Icon({src: "icons/nicubunu-RPG-map-symbols-Wishing-Well-2-300px.png",
-                        size: [300, 300],
-                        scale: 0.33,
-                    })
-                            /*
-                             * new ol.style.Circle({
-                             fill: new ol.style.Fill({
-                             color: 'rgba(255,0,0,1)'
-                             }),
-                             radius: 20,
-                             stroke: new ol.style.Stroke({
-                             color: '#ffffff',
-                             width: 5
-                             })
-                             })
-                             */
-                }));
+        //default image: circle
+        var poiImage = new ol.style.Style({
+            image: new ol.style.Circle({
+                fill: new ol.style.Fill({
+                    color: 'rgba(255,0,0,1)'
+                }),
+                radius: 20,
+                stroke: new ol.style.Stroke({
+                    color: '#ffffff',
+                    width: 5
+                })
+            })
+        });
+
+        if (typeof (this.poiIco) === "string" && this.poiIco.length > 0) {
+            //PNG image is the POI icon    
+            poiImage = new ol.style.Style({
+                image: new ol.style.Icon({src: this.poiIco,
+                    size: [300, 300],
+                    scale: 0.33
+                })
+            })
+        }
+
+
+        this.features[i].setStyle(poiImage);
     }
 
     var vectorSource = new ol.source.Vector({
@@ -131,5 +140,5 @@ PointLayer.prototype.getNearest = function (location) {
  */
 PointLayer.prototype.report = function (coordinate) {
     var nearest = this.getNearest(coordinate);
-    return "Nearest " + this.name + " is " + Math.round(nearest.distance) + "m\n";
+    return "Nejbližší " + this.name + " je " + Math.round(nearest.distance) + "m\n";
 };
