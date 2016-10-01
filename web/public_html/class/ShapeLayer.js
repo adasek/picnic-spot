@@ -17,15 +17,27 @@
  * @returns {ShapeLayer} initialized structure bind to DOM 
  */
 
-var ShapeLayer = function (geojsonFilename, propertyName, cb) {
+var ShapeLayer = function (opts, cb) {
     Layer.call(this);
 
-    this.propertyName = propertyName;
+    this.propertyName = opts.property;
+    this.name = opts.name;
 
     this.geojson = {};
 
-    this.download(geojsonFilename, "geojson", cb);
+    if (typeof (opts.file) !== "string" || opts.file.length === 0) {
+        throw "No filename providen to ShapeLayer";
+    }
 
+    this.download(opts.file, "geojson", cb);
+
+    /**
+     * Indexed with property value => key is rgb string
+     */
+    this.colorCache = {};
+
+    /* Array of max and min value of property */
+    this.minMax = null;
 };
 
 //Inheritance
@@ -39,17 +51,17 @@ ShapeLayer.prototype = Object.create(Layer.prototype);
  * @param {function} colorScale - color scale for (0..1)
  * @returns {ol.Vector}
  */
-ShapeLayer.prototype.getVector = function (colorScaleStr) {
+ShapeLayer.prototype.getVector = function () {
 
 
     //convert geojson
     this.features = (new ol.format.GeoJSON()).readFeatures(this.geojson, {featureProjection: 'EPSG:3857'});
 
-    this.normalizeProperty(this.features);
+    var minMax = this.getMinMax(this.propertyName);
 
     for (var i = 0; i < this.features.length; i++) {
         var gValue = this.features[i].get(this.propertyName);
-        var colorString = colorScaleStr(gValue);
+        var colorString = this.colorScaleStr(gValue, minMax);
 
         this.features[i].setStyle(
                 new ol.style.Style({
@@ -83,6 +95,9 @@ ShapeLayer.prototype.getValueAt = function (coordinate) {
 
     var features = this.vectorSource.getFeaturesAtCoordinate(coordinate)
     //test: highlight this feature
+    if (features === null || features.length === 0) {
+        return undefined;
+    }
     features[0].setStyle(
             new ol.style.Style({
                 fill: new ol.style.Fill({"color": "#0000ff"})
@@ -93,13 +108,18 @@ ShapeLayer.prototype.getValueAt = function (coordinate) {
 
 
 /* */
-ShapeLayer.prototype.normalizeProperty = function (features) {
+ShapeLayer.prototype.getMinMax = function (propertyName) {
+    if (this.minMax !== null && this.minMax !== undefined) {
+        return this.minMax;
+    }
+
     var gValue;
     var max = -999;
     var min = 999;
 
-    for (var i = 0; i < features.length; i++) {
-        gValue = features[i].get(this.propertyName);
+
+    for (var i = 0; i < this.features.length; i++) {
+        gValue = this.features[i].get(propertyName);
         if (gValue > max) {
             max = gValue;
         }
@@ -107,12 +127,65 @@ ShapeLayer.prototype.normalizeProperty = function (features) {
             min = gValue;
         }
     }
+    this.minMax = [min, max];
+    return this.minMax;
+};
 
-    //normalize
-    console.log(min + ".." + max);
 
-    for (var i = 0; i < features.length; i++) {
-        gValue = features[i].get(this.propertyName);
-        features[i].set(this.propertyName, (gValue - min) / (max - min));
+ShapeLayer.prototype.colorScale = function (index, minMax) {
+    /* //jet
+     var myScale = {
+     0: [0, 0, 131],
+     0.125: [0, 60, 170],
+     0.375: [5, 255, 255],
+     0.625: [255, 255, 0],
+     0.875: [250, 0, 0],
+     1: [128, 0, 0]};
+     */
+
+    var myScale = {0: [0, 0, 0, 1], 1: [255, 255, 0, 1]};
+    //normalize value:
+    index = (index - minMax[0]) / (minMax[1] - minMax[0]);
+
+    var lastP = 0;
+    for (var p in myScale) {
+        if (lastP <= index && p >= index) {
+            //do linear interpolation
+            var ret = [0, 0, 0, 0];
+            for (var n = 0; n < 4; n++) {
+                ret[n] = myScale[lastP][n] + ((index - lastP) / (p - lastP)) * (myScale[p][n] - myScale[lastP][n]);
+            }
+            return ret;
+        }
+        lastP = p;
     }
+    console.error("Color scale failed; index " + index + "not between 0..1");
+    throw "color scale failed";
+};
+
+
+ShapeLayer.prototype.colorScaleStr = function (gValue, minMax) {
+    if (this.colorCache[gValue] !== undefined) {
+        return this.colorCache[gValue];
+    }
+
+    var colorArray = this.colorScale(gValue, minMax);
+    var colorString = "#";
+    for (var i = 0; i < 3; i++) {
+        var cc = colorArray[i].toString(16);
+        colorString += ("00" + cc).substring(2 + cc.length - 2);
+    }
+    this.colorCache[gValue] = colorString;
+    return colorString;
+};
+
+/**
+ * 
+ * @returns {undefined}
+ */
+ShapeLayer.prototype.report = function (v) {
+    this.getMinMax(this.propertyName);
+    return this.name + " value is " + v + " out of " + this.minMax[1]+"\n";
+
+
 };
