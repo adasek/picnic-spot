@@ -48,6 +48,20 @@
                 top: 80px;
             }
 
+            #info {
+                position:fixed;
+                width:50vw;
+                height:50vh;
+                top:0;
+                right:0;
+                min-width:20em;
+                min-height:20em;
+                background-color:white;
+                background-color:rgba(255,255,255,0.5);
+                padding:1vmin;
+            }
+
+
         </style>
 
 
@@ -179,7 +193,7 @@
                                 text += layerArray[i].report(coordinate);
                             }
                         }
-                        alert(text);
+                        showInfo(text);
                     });
 
                     //map.addLayer(vector);
@@ -198,6 +212,20 @@
 
             } //end of init
 
+            function showInfo(htmlCode) {
+                if (document.getElementById('info')) {
+                    document.getElementById('info').innerHTML = htmlCode;
+                    document.getElementById('info').style.display = "block";
+                    document.getElementById('info').onclick = hideInfo;
+                }
+            }
+            function hideInfo() {
+                if (document.getElementById('info')) {
+                    document.getElementById('info').style.display = "none";
+                }
+            }
+            hideInfo();
+
             /*  ]]> */
         </script>
 
@@ -206,5 +234,6 @@
 
         <div id="map" class="map"></div>
         <div id="popup"></div>
+        <div id="info">This is fixed overlay</div>
     </body>
 </html>
