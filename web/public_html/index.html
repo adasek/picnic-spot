@@ -52,26 +52,38 @@
             #info {
                 position:fixed;
                 background-color:white;
-                background-color:rgba(255,255,255,0.7);
+                background-color:rgba(255,255,255,1);
                 padding:1vmin;
             }
             #info .Layer,#info .Link {position:relative;float:left;}
 
-            /* default: desktop */
-            #info {
-                width:100vw;
+            #ourlogo{
+                position:fixed;
+                width:10vw;
                 height:10vmin;
                 top:0;
                 left:0;
+                background-color:rgba(255,255,255,0.4);
             }
-            #info .Layer,#info .Link {width:10vh;height:10vmin}
+            #ourlogo img{width:100%;height:auto}
+            .ol-zoom{top:inherit;bottom:1vh}
+
+            /* default: desktop */
+            #info {
+                width:90vw;
+                height:10vmin;
+                top:0;
+                left:10vw;
+            }
+            #info .Layer,#info .Link {width:5.5%;height:10vmin}
             /* Mobile*/
             @media (max-width: 800px) {
                 #info {
                     width:50vw;
                     height:50vh;
                     top:0;
-                    left:0;
+                    right:0;
+                    left:inherit;
                     min-width:240px;
                     min-height:240px;
                 }
@@ -120,398 +132,384 @@
 
 
             var map;
-
-
             function init() {
 
-                var layersSrc = [
-                    {
-                        "class": "ShapeLayer",
-                        "name": "Sun intensity",
-                        "file": "data/OVZ_Klima_Osluneni_p.json",
-                        "property": "GRIDVALUE",
-                        "comment-icons": "Nota bene ShapeLayers ~ higher=better",
-                        "icons": {
-                            2: "0_kvalita_prostredi.png",
+            var layersSrc = [
+            {
+            "class": "ShapeLayer",
+                    "name": "Sun intensity",
+                    "file": "data/OVZ_Klima_Osluneni_p.json",
+                    "property": "GRIDVALUE",
+                    "comment-icons": "Nota bene ShapeLayers ~ higher=better",
+                    "icons": {
+                    2: "0_kvalita_prostredi.png",
                             4: "50_kvalita_prostredi.png",
                             5: "100_kvalita_prostredi.png"
-                        }
-                    }, {
-                        "class": "PointLayer",
-                        "name": "ohniště",
-                        "file": "data/ohniste.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_ohniste.png",
-                        "icons": {
-                            50: "100_ohniste.png",
+                    }
+            }, {
+            "class": "PointLayer",
+                    "name": "ohniště",
+                    "file": "data/ohniste.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_ohniste.png",
+                    "icons": {
+                    50: "100_ohniste.png",
                             200: "50_ohniste.png",
                             1000: "0_ohniste.png"
-                        },
-                        "zoomTreshold": 14
-                    }, {
-                        "class": "PointLayer",
-                        "name": "grill",
-                        "file": "data/grilly.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_gril.png",
-                        "icons": {
-                            50: "100_gril.png",
+                    },
+                    "zoomTreshold": 14
+            }, {
+            "class": "PointLayer",
+                    "name": "grill",
+                    "file": "data/grilly.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_gril.png",
+                    "icons": {
+                    50: "100_gril.png",
                             200: "50_gril.png",
                             1000: "0_gril.png"
-                        },
-                        "zoomTreshold": 14
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Pítko/studánka",
-                        "file": "data/drinking_water.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_pitna_voda.png",
-                        "icons": {
-                            80: "100_pitna_voda.png",
+                    },
+                    "zoomTreshold": 14
+            }, {
+            "class": "PointLayer",
+                    "name": "Pítko/studánka",
+                    "file": "data/drinking_water.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_pitna_voda.png",
+                    "icons": {
+                    80: "100_pitna_voda.png",
                             300: "50_pitna_voda.png",
                             1000: "0_pitna_voda.png"
-                        }
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Zastávka MHD",
-                        "file": "data/mhd_stop.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_hromadna_doprava.png",
-                        "zoomTreshold": 17,
-                        "icons": {
-                            100: "100_hromadna_doprava.png",
+                    }
+            }, {
+            "class": "PointLayer",
+                    "name": "Zastávka MHD",
+                    "file": "data/mhd_stop.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_hromadna_doprava.png",
+                    "zoomTreshold": 17,
+                    "icons": {
+                    100: "100_hromadna_doprava.png",
                             300: "50_hromadna_doprava.png",
                             1000: "0_hromadna_doprava.png"
-                        }
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Sportoviště",
-                        "file": "data/sport.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_sportoviste.png",
-                        "icons": {
-                            100: "100_sportoviste.png",
+                    }
+            }, {
+            "class": "PointLayer",
+                    "name": "Sportoviště",
+                    "file": "data/sport.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_sportoviste.png",
+                    "icons": {
+                    100: "100_sportoviste.png",
                             300: "50_sportoviste.png",
                             1000: "0_sportoviste.png"
-                        }
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Parkoviště",
-                        "file": "data/parking.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_parkoviste.png",
-                        "icons": {
-                            100: "100_parkoviste.png",
+                    }
+            }, {
+            "class": "PointLayer",
+                    "name": "Parkoviště",
+                    "file": "data/parking.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_parkoviste.png",
+                    "icons": {
+                    100: "100_parkoviste.png",
                             300: "50_parkoviste.png",
                             1000: "0_parkoviste.png"
-                        }
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Parkoviště",
-                        "file": "data/toilets.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_verejne_zachody.png",
-                        "icons": {
-                            50: "100_verejne_zachody.png",
+                    }
+            }, {
+            "class": "PointLayer",
+                    "name": "Parkoviště",
+                    "file": "data/toilets.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_verejne_zachody.png",
+                    "icons": {
+                    50: "100_verejne_zachody.png",
                             200: "50_verejne_zachody.png",
                             1000: "0_verejne_zachody.png"
-                        }
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Výhled",
-                        "file": "data/viewpoint.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_vyhlidka.png",
-                        "icons": {
-                            50: "100_vyhlidka.png",
+                    }
+            }, {
+            "class": "PointLayer",
+                    "name": "Výhled",
+                    "file": "data/viewpoint.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_vyhlidka.png",
+                    "icons": {
+                    50: "100_vyhlidka.png",
                             200: "50_vyhlidka.png",
                             1000: "0_vyhlidka.png"
-                        }
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Dětské hřiště",
-                        "file": "data/playground.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_detska_hriste.png",
-                        "icons": {
-                            100: "100_detska_hriste.png",
+                    }
+            }, {
+            "class": "PointLayer",
+                    "name": "Dětské hřiště",
+                    "file": "data/playground.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_detska_hriste.png",
+                    "icons": {
+                    100: "100_detska_hriste.png",
                             300: "50_detska_hriste.png",
                             1000: "0_detska_hriste.png"
-                        }
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Koš/kontejnery",
-                        "file": "data/waste_basket.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_kose_a_kontejnery.png",
-                        "icons": {
-                            50: "100_kose_a_kontejnery.png",
+                    }
+            }, {
+            "class": "PointLayer",
+                    "name": "Koš/kontejnery",
+                    "file": "data/waste_basket.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_kose_a_kontejnery.png",
+                    "icons": {
+                    50: "100_kose_a_kontejnery.png",
                             200: "50_kose_a_kontejnery.png",
                             1000: "0_kose_a_kontejnery.png"
-                        }
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Posezení",
-                        "file": "data/sitting.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_posezeni.png",
-                        "icons": {
-                            50: "100_posezeni.png",
+                    }
+            }, {
+            "class": "PointLayer",
+                    "name": "Posezení",
+                    "file": "data/sitting.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_posezeni.png",
+                    "icons": {
+                    50: "100_posezeni.png",
                             100: "50_posezeni.png",
                             1000: "0_posezeni.png"
-                        },
-                        "zoomTreshold": 14
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Zákaz alkoholu",
-                        "file": "data/alcohol.gpx",
-                        "type": "gpx",
-                        "poiIco": "zakaz_alkoholu.png",
-                        "dontshowmeters": true,
-                        "icons": {
-                            200: "0_piti_alkoholu.png",
+                    },
+                    "zoomTreshold": 14
+            }, {
+            "class": "PointLayer",
+                    "name": "Zákaz alkoholu",
+                    "file": "data/alcohol.gpx",
+                    "type": "gpx",
+                    "poiIco": "zakaz_alkoholu.png",
+                    "dontshowmeters": true,
+                    "icons": {
+                    200: "0_piti_alkoholu.png",
                             1000: "100_piti_alkoholu.png"
-                        },
-                        "zoomTreshold": 15
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Doporučené místo Praha Zelená",
-                        "file": "data/kosiky_praha_zelena.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_piknik.png",
-                        "icons": false,
-                        "zoomTreshold": 10
-                    }, {
-                        "class": "PointLayer",
-                        "name": "Klidné místo",
-                        "file": "data/klidna_mista.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_klidna_oblast.png",
-                        "icons": {
-                            100: "100_klidna_oblast.png",
+                    },
+                    "zoomTreshold": 15
+            }, {
+            "class": "PointLayer",
+                    "name": "Doporučené místo Praha Zelená",
+                    "file": "data/kosiky_praha_zelena.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_piknik.png",
+                    "icons": false,
+                    "zoomTreshold": 10
+            }, {
+            "class": "PointLayer",
+                    "name": "Klidné místo",
+                    "file": "data/klidna_mista.gpx",
+                    "type": "gpx",
+                    "poiIco": "100_klidna_oblast.png",
+                    "icons": {
+                    100: "100_klidna_oblast.png",
                             200: "50_klidna_oblast.png",
                             1000: "0_klidna_oblast.png"
-                        },
-                        "zoomTreshold": 14
-                    }
-                    /* nature_reserve nebudou */
-                    /*
-                     /*
-                     //Typical client does not want a 150MB file
-                     {      class: "ShapeLayer",
-                     "name": "Traffic noise",
-                     "file": "data/HM_Ekola_ADP_pasma_den_p_shp/data.geojson",
-                     "property": "DB_HI"
-                     },
-                     */
+                    },
+                    "dontshowmeters": true,
+                    "zoomTreshold": 14
+            }
+            /* nature_reserve nebudou */
+            /*
+             /*
+             //Typical client does not want a 150MB file
+             {      class: "ShapeLayer",
+             "name": "Traffic noise",
+             "file": "data/HM_Ekola_ADP_pasma_den_p_shp/data.geojson",
+             "property": "DB_HI"
+             },
+             */
 
-                ];
-
-
-                myLayers = [];
-                for (var i = 0; i < layersSrc.length; i++) {
-                    myLayers.push(function (done) {
-                        var area = new window[this.class](
-                                this, function () {
-                                    done(null, area);
-                                });
-                    }.bind(layersSrc[i]));
-                }
-
-
-                async.parallel(myLayers, function (err, layerArray) {
+            ];
+            myLayers = [];
+            for (var i = 0; i < layersSrc.length; i++) {
+            myLayers.push(function (done) {
+            var area = new window[this.class](
+                    this, function () {
+                    done(null, area);
+                    });
+            }.bind(layersSrc[i]));
+            }
 
 
-                    //RENDERING THE MAP
-
-                    var projection = ol.proj.get('EPSG:900913');
-                    var projExtent = projection.getExtent();
-                    var startResolution = ol.extent.getWidth(projExtent) / 256;
-                    var resolutions = new Array(22);
-                    for (var i = 0, ii = resolutions.length; i < ii; ++i) {
-                        resolutions[i] = startResolution / Math.pow(2, i);
-                    }
+            async.parallel(myLayers, function (err, layerArray) {
 
 
+            //RENDERING THE MAP
 
-                    var tl = ol.proj.transform([14, 49], 'EPSG:4326', 'EPSG:900913');
-                    var br = ol.proj.transform([15, 51], 'EPSG:4326', 'EPSG:900913');
-                    var layers = new Array();
-                    /* default OSM layer */
-                    layers.push(new ol.layer.Tile({
-                        source: new ol.source.OSM({
-                            params: {},
-                            name: "OSM tiles from public server"
-                        })
-                    })
-                            );
+            var projection = ol.proj.get('EPSG:900913');
+            var projExtent = projection.getExtent();
+            var startResolution = ol.extent.getWidth(projExtent) / 256;
+            var resolutions = new Array(22);
+            for (var i = 0, ii = resolutions.length; i < ii; ++i) {
+            resolutions[i] = startResolution / Math.pow(2, i);
+            }
 
-                    map = new ol.Map({
-                        controls: ol.control.defaults({
-                            attributionOptions: ({
-                                collapsible: false
-                            })
-                        }),
-                        layers: [layers[0]],
-                        target: 'map',
-                        view: new ol.View({
-                            center: ol.proj.transform([14.3969197, 50.0815394], 'EPSG:4326', 'EPSG:3857'),
+
+
+            var tl = ol.proj.transform([14, 49], 'EPSG:4326', 'EPSG:900913');
+            var br = ol.proj.transform([15, 51], 'EPSG:4326', 'EPSG:900913');
+            var layers = new Array();
+            /* default OSM layer */
+            layers.push(new ol.layer.Tile({
+            source: new ol.source.OSM({
+            params: {},
+                    name: "OSM tiles from public server"
+            })
+            })
+                    );
+            map = new ol.Map({
+            controls: ol.control.defaults({
+            attributionOptions: ({
+            collapsible: false
+            })
+            }),
+                    layers: [layers[0]],
+                    target: 'map',
+                    view: new ol.View({
+                    center: ol.proj.transform([14.3969197, 50.0815394], 'EPSG:4326', 'EPSG:3857'),
                             extent: [tl[0], tl[1], br[0], br[1]],
                             zoom: 13,
                             minZoom: 12,
                             maxZoom: 19
-                        })
-                    });
-
-                    for (var i = 0; i < layerArray.length; i++) {
-                        if (layerArray[i].type === "gpx") {
-                            map.addLayer(layerArray[i].getVector());
-                        }
-                    }
-
+                    })
+            });
+            for (var i = 0; i < layerArray.length; i++) {
+            if (layerArray[i].type === "gpx") {
+            map.addLayer(layerArray[i].getVector());
+            }
+            }
 
 
-                    function reZoom() {
-                        //On change zoom:
 
-                        //Hide what should be hidden
-                        var newZoom = map.getView().getZoom();
-                        for (var i = 0; i < layerArray.length; i++) {
-                            if (layerArray[i].type === "gpx") {
-                                layerArray[i].zoomedEvent(newZoom);
-                            }
-                        }
+            function reZoom() {
+            //On change zoom:
 
-                    }
+            //Hide what should be hidden
+            var newZoom = map.getView().getZoom();
+            for (var i = 0; i < layerArray.length; i++) {
+            if (layerArray[i].type === "gpx") {
+            layerArray[i].zoomedEvent(newZoom);
+            }
+            }
 
-                    map.getView().on('change:resolution', reZoom);
-                    reZoom();
+            }
 
-                    map.on('click', function (evt) {
-                        var coordinate = evt.coordinate;
-                        var text = "";
-                        for (var i = 0; i < layerArray.length; i++) {
-                            if (typeof layerArray[i].getValueAt === "function") {
-                                text += layerArray[i].report(coordinate);
-                            } else if (typeof layerArray[i].getNearest === "function") {
-                                text += layerArray[i].report(coordinate);
-                            }
-                        }
-                        //external links
-                        /*
-                         vítr
-                         https://www.windyty.com/?50.063,14.348,15 (poslední číslo je zoom, při velkém zoomu by to mělo ukázat jako podklad mapy.cz)
-                         
-                         mapy
-                         https://mapy.cz/turisticka?x=14.3340789&y=50.0805328&z=16 (poslední číslo je opět zoom)
-                         
-                         počasí
-                         https://www.yr.no/place/Czech_Republic/Prague/Prague/ (asi jde jenom po městech, ale to  nám nevadí... je tu i vítr, ale není to tak pěkný jako u windyty, jsou tu i srážky ale ne radar - viz níže)
-                         
-                         NaOvoce
-                         https://na-ovoce.cz/cs/mapa/#17/50.08799/14.35398 (číslo za # je zoom)
-                         
-                         srážky
-                         http://portal.chmi.cz//files/portal/docs/meteo/rad/data_jsradview.html
-                         */
+            map.getView().on('change:resolution', reZoom);
+            reZoom();
+            map.on('click', function (evt) {
+            var coordinate = evt.coordinate;
+            var text = "";
+            for (var i = 0; i < layerArray.length; i++) {
+            if (typeof layerArray[i].getValueAt === "function") {
+            text += layerArray[i].report(coordinate);
+            } else if (typeof layerArray[i].getNearest === "function") {
+            text += layerArray[i].report(coordinate);
+            }
+            }
+            //external links
+            /*
+             vítr
+             https://www.windyty.com/?50.063,14.348,15 (poslední číslo je zoom, při velkém zoomu by to mělo ukázat jako podklad mapy.cz)
+             
+             mapy
+             https://mapy.cz/turisticka?x=14.3340789&y=50.0805328&z=16 (poslední číslo je opět zoom)
+             
+             počasí
+             https://www.yr.no/place/Czech_Republic/Prague/Prague/ (asi jde jenom po městech, ale to  nám nevadí... je tu i vítr, ale není to tak pěkný jako u windyty, jsou tu i srážky ale ne radar - viz níže)
+             
+             NaOvoce
+             https://na-ovoce.cz/cs/mapa/#17/50.08799/14.35398 (číslo za # je zoom)
+             
+             srážky
+             http://portal.chmi.cz//files/portal/docs/meteo/rad/data_jsradview.html
+             */
 
-                        var gps = ol.proj.transform(coordinate, 'EPSG:900913', 'EPSG:4326');
+            var gps = ol.proj.transform(coordinate, 'EPSG:900913', 'EPSG:4326');
+            var externalLinks = [
+            {"address": "https://www.windyty.com/?%LAT,%LON,%ZOOM",
+                    "title": "Síla větru",
+                    "ico": "gfx/links/windyty.png"
+            },
+            {"address": "https://mapy.cz/turisticka?x=%LON&y=%LAT&z=%ZOOM ",
+                    "title": "Mapy.cz",
+                    "ico": "gfx/links/mapy.png"
+            },
+            {"address": "https://na-ovoce.cz/cs/mapa/#%ZOOM/%3LAT/%3LON",
+                    "title": "Na Ovoce",
+                    "ico": "gfx/links/naovoce.png"
+            },
+            ]
+                    for (var k in externalLinks) {
+            var addr = externalLinks[k].address
+                    .replace("%3LAT", Math.round(gps[1] * 1000) / 1000)
+                    .replace("%3LON", Math.round(gps[0] * 1000) / 1000)
+                    .replace("%LAT", gps[1])
+                    .replace("%LON", gps[0])
+                    .replace("%ZOOM", map.getView().getZoom());
+            text += "<div class=\"Link\"><a href=\"" + addr + "\" class=\"externalLink\" title=\"" + externalLinks[k].title + "\"><img src=\"" + externalLinks[k].ico + "\" class=\"logo\"></a></div>"
+            }
+            showInfo(text);
+            });
+            //show some symbol on clicked position
 
-
-                        var externalLinks = [
-                            {"address": "https://www.windyty.com/?%LAT,%LON,%ZOOM",
-                                "title": "Síla větru",
-                                "ico": "gfx/links/windyty.png"
-                            },
-                            {"address": "https://mapy.cz/turisticka?x=%LON&y=%LAT&z=%ZOOM ",
-                                "title": "Mapy.cz",
-                                "ico": "gfx/links/mapy.png"
-                            },
-                            {"address": "https://na-ovoce.cz/cs/mapa/#%ZOOM/%3LAT/%3LON",
-                                "title": "Na Ovoce",
-                                "ico": "gfx/links/naovoce.png"
-                            },
-                        ]
-                        for (var k in externalLinks) {
-                            var addr = externalLinks[k].address
-                                    .replace("%3LAT", Math.round(gps[1] * 1000) / 1000)
-                                    .replace("%3LON", Math.round(gps[0] * 1000) / 1000)
-                                    .replace("%LAT", gps[1])
-                                    .replace("%LON", gps[0])
-                                    .replace("%ZOOM", map.getView().getZoom());
-                            text += "<div class=\"Link\"><a href=\"" + addr + "\" class=\"externalLink\" title=\"" + externalLinks[k].title + "\"><img src=\"" + externalLinks[k].ico + "\" class=\"logo\"></a></div>"
-                        }
-                        showInfo(text);
-                    });
-
-
-                    //show some symbol on clicked position
-
-                    var clickSource = new ol.source.Vector({wrapX: false});
-                    var clickVector = new ol.layer.Vector({
-                        source: clickSource,
-                        style: new ol.style.Style({
-                            fill: new ol.style.Fill({
-                                color: 'rgba(0,0,0,0.5)'
-                            }),
+            var clickSource = new ol.source.Vector({wrapX: false});
+            var clickVector = new ol.layer.Vector({
+            source: clickSource,
+                    style: new ol.style.Style({
+                    fill: new ol.style.Fill({
+                    color: 'rgba(0,0,0,0.5)'
+                    }),
                             stroke: new ol.style.Stroke({
-                                color: '#ffcc33',
-                                width: 2
+                            color: '#ffcc33',
+                                    width: 2
                             }),
                             image: new ol.style.Circle({
-                                radius: 10,
-                                fill: new ol.style.Fill({
+                            radius: 10,
+                                    fill: new ol.style.Fill({
                                     color: 'rgba(0,0,0,0.5)'
-                                })
+                                    })
                             })
-                        })
-                    });
-                    map.addLayer(clickVector);
-                    var draw; // global so we can remove it later
-                    function addInteraction() {
-                        draw = new ol.interaction.Draw({
-                            source: clickSource,
-                            type: /** @type {ol.geom.GeometryType} */ "Point",
-                            style: new ol.style.Style({})
-                        });
-                        draw.on("drawend", function (dr) {
-                            clickSource.clear();
-                        })
-                        //draw.removeLastPoint();
-                        map.addInteraction(draw);
-                    }
-                    addInteraction();
+                    })
+            });
+            map.addLayer(clickVector);
+            var draw; // global so we can remove it later
+            function addInteraction() {
+            draw = new ol.interaction.Draw({
+            source: clickSource,
+                    type: /** @type {ol.geom.GeometryType} */ "Point",
+                    style: new ol.style.Style({})
+            });
+            draw.on("drawend", function (dr) {
+            clickSource.clear();
+            })
+                    //draw.removeLastPoint();
+                    map.addInteraction(draw);
+            }
+            addInteraction();
+            //map.addLayer(vector);
 
-                    //map.addLayer(vector);
-
-                    /* http://openlayers.org/en/master/examples/popup.html */
-                    popup = new ol.Overlay({
-                        element: document.getElementById('popup'),
-                        position: ol.proj.fromLonLat([14.52301, 50.1083]),
-                        positioning: "top-center"
-                    });
-                    map.addOverlay(popup);
-
-                }
-                );
+            /* http://openlayers.org/en/master/examples/popup.html */
+            popup = new ol.Overlay({
+            element: document.getElementById('popup'),
+                    position: ol.proj.fromLonLat([14.52301, 50.1083]),
+                    positioning: "top-center"
+            });
+            map.addOverlay(popup);
+            }
+            );
             hideInfo();
-
             } //end of init
 
             function showInfo(htmlCode) {
-                if (document.getElementById('info')) {
-                    document.getElementById('info').innerHTML = htmlCode;
-                    document.getElementById('info').style.display = "block";
-                    document.getElementById('info').onclick = hideInfo;
-                }
+            if (document.getElementById('info')) {
+            document.getElementById('info').innerHTML = htmlCode;
+            document.getElementById('info').style.display = "block";
+            document.getElementById('info').onclick = hideInfo;
+            }
             }
             function hideInfo() {
-                if (document.getElementById('info')) {
-                    document.getElementById('info').style.display = "none";
-                }
+            if (document.getElementById('info')) {
+            document.getElementById('info').style.display = "none";
+            }
             }
             hideInfo();
-
             /*  ]]> */
         </script>
 
@@ -520,6 +518,7 @@
 
         <div id="map" class="map"></div>
         <div id="popup"></div>
+        <div id="ourlogo"><a href="#" onclick=\"javascript:alert('about overlay')\"><img src="gfx/logo.png"></a></div>
         <div id="info"><h2>Klikněte do mapy...</h2></div>
     </body>
 </html>
