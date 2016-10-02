@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
-        <title>OL test</title>
+        <title>Kamnapiknik.cz</title>
 
         <link rel="stylesheet" href="lib/openlayers/ol.css" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Catamaran:400,700,900&subset=latin-ext" rel="stylesheet"> 
@@ -43,6 +43,23 @@
             }
             #popup svg {height:50px;width:100%;border:1px solid black}
 
+            #about {
+                position:fixed;
+                height:80vh;
+                width:80vw;
+                top:10vh;
+                left:10vh;
+                border-radius:2vh;
+                background-color:white;
+                padding:2vmin;
+                overflow-y:scroll;
+            }
+            #about table{border-collapse:collapse;width:90%;margin:0 auto}
+            #about td {border:1px solid #555555}
+            #about td:first-child{width:20%;}
+
+
+
             .trackList {
                 max-height:70vh;
                 overflow-y:auto;
@@ -78,7 +95,7 @@
                 top:80vh;
                 right:0;
                 background-color:rgba(255,255,255,1);
-                border-radius:1vh 0 0 1vh;
+                border-radius:2vh 0 0 2vh;
             }
             #ourlogo img{width:auto;height:100%;margin:0 1em}
             .ol-zoom{top:inherit;bottom:1vh}
@@ -89,11 +106,13 @@
                 height:10vmin;
                 top:0;
                 left:0;
+                border-radius:0 0 2vh 2vh;
             }
             #info .Layer,#info .Link {width:5.5%;height:10vmin}
             /* Mobile*/
             @media (max-width: 800px) {
                 #info {
+                    border-radius: 2vh 0 0 2vh;
                     width:50vw;
                     height:50vh;
                     top:0;
@@ -328,7 +347,7 @@
                         "icons": {
                             50: "100_ulicni_osvetleni.png",
                             200: "50_ulicni_osvetleni.png",
-                            1000: "invis.png"
+                            1000: "0_ulicni_osvetleni.png"
                         },
                         "dontshowmeters": true,
                         "zoomTreshold": 19
@@ -523,6 +542,7 @@
                 }
                 );
                 hideInfo();
+                hideAbout();
             } //end of init
 
             function showInfo(htmlCode) {
@@ -537,7 +557,31 @@
                     document.getElementById('info').style.display = "none";
                 }
             }
+
+            function showAbout() {
+                if (document.getElementById('about')) {
+                    document.getElementById('about').style.display = "block";
+                    //document.getElementById('about').onclick = hideAbout;
+                }
+            }
+            function hideAbout() {
+                if (document.getElementById('about')) {
+                    document.getElementById('about').style.display = "none";
+                }
+            }
+
+            function toggleAbout() {
+                if (document.getElementById('about')) {
+                    if (document.getElementById('about').style.display === "none") {
+                        showAbout();
+                    } else {
+                        hideAbout();
+                    }
+                }
+            }
+
             hideInfo();
+            hideAbout();
             /*  ]]> */
         </script>
 
@@ -546,7 +590,198 @@
 
         <div id="map" class="map"></div>
         <div id="popup"></div>
-        <div id="ourlogo"><a href="#" onclick="javascript:alert('about overlay');"><img src="gfx/logo.png"></a></div>
+        <div id="ourlogo"><a href="#" onclick="toggleAbout();"><img src="gfx/logo.png"></a></div>
         <div id="info"><h2>Klikněte do mapy...</h2></div>
-    </body>
-</html>
+
+
+        <div id="about">
+            <h1>Kam na piknik.cz</h1>
+            <h2>Projekt vznikl v rámci Prague Hacks 2016</h2>
+            <p>Tým: Adam, Jana, Adéla</p>
+
+            <p>Cílem je nalézt v Praze místa vhodná pro piknik a poskytnout informace, které jsou pro piknik relevantní (např. vzdálenost od nejbližších veřejných toalet, zdroje pitné vody, parkoviště nebo zastávky veřejné dopravy, přítomnost veřejného osvětlení a další). V hodnocení oblasti je také zahruta kvalita životního prostředí, která se uživateli nezobrazuje. Jedná se ale například o bonitu klimatu z hlediska oslunění (mezi další patří znečištění ovzduší, hluk apod.)</p>
+
+            <h3>Zdroje dat</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Bonita klimatu z hlediska oslunění</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://opendata.praha.eu/dataset/ipr-bonita_klimatu_z_hlediska_osluneni" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://opendata.praha.eu/dataset/ipr-bonita_klimatu_z_hlediska_osluneni</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Studánky</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.estudanky.eu" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.estudanky.eu</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Ohniště a přenosné grily</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://portalzp.praha.eu/public/88/bf/d1/2087937_703028_piknik_mista_92016.pdf" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://portalzp.praha.eu/public/88/bf/d1/2087937_703028_piknik_mista_92016.pdf</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Zdroje pitné vody</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Lampy</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.geoportalpraha.cz/cs/opendata/7F8B74A0-0D88-43CC-9848-A06883BC34B9#.V_Cx-ztBWb8" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.geoportalpraha.cz/cs/opendata/7F8B74A0-0D88-43CC-9848-A06883BC34B9#.V_Cx-ztBWb8</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Zastávky MHD</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Sportoviště</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Parkoviště</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Toalety</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Vyhlídková místa</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Dětská hřiště</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Koše a kontejnery</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Posezení</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Posezení:židle</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.iprpraha.cz/zidle" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.iprpraha.cz/zidle</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Praha zelená</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://prahazelena.cz/" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://prahazelena.cz/</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Zákaz pití alkoholu</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://www.praha.eu/jnp/cz/o_meste/zivot_v_praze/bezpecnost/mapa_kde_je_v_praze_zakazano_pit_alkohol.html" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.praha.eu/jnp/cz/o_meste/zivot_v_praze/bezpecnost/mapa_kde_je_v_praze_zakazano_pit_alkohol.html</span></a></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+            <h3>Externí odkazy</h3>
+                    <table>
+                        <tbody>
+                            
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://mapy.cz" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">mapy.cz</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://na-ovoce.cz" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">na-ovoce.cz</span></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="http://windyty.com" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">windyty.com</span></a></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+            <h3>Užitá multimedia</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Ikony</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="https://thenounproject.com/" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">https://thenounproject.com/</span></a></p>
+
+                                    <p><span style="background-color:transparent; color:#000000">Authors: Martin Vanco, Ivan Pletenac, parkjisun, Creative Stall, Sergej Demushkin, Giuditta Valentina Gentile, Pierre-Luc Auclair, Carla Dias, Edward Boatman</span></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:bottom">
+                                    <p><span style="background-color:transparent; color:#000000">Font</span></p>
+                                </td>
+                                <td style="vertical-align:bottom">
+                                    <p><a href="https://fonts.google.com/specimen/Catamaran?selection.family=Catamaran" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">https://fonts.google.com/specimen/Catamaran?selection.family=Catamaran</span></a></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+
+                    </body>
+                    </html>
