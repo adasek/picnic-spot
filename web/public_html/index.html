@@ -61,9 +61,38 @@
                 padding:1vmin;
             }
 
-            #info .Layer {float:left;width:20%;height:33%}
+            #info .Layer,#info .Link {position:relative;float:left;width:20%;height:25%;border:1px solid black;}
+            #info .Layer > .Value {
+                position:absolute;
+                bottom:0;
+                width:100%;
+                background-color:rgba(255,255,255,0.5);
+                text-align:center;
+            }
+            .Layer {text-align:center}
+            .Layer > img {
+                height:100%;
+                top:0;
+                display:block;
+                margin:0 auto;
 
+            }
 
+            .externalLink .logo{
+                position:absolute;
+                width:100%;
+                height:100%;
+                top:0;
+                left:0;
+                opacity:0.8;
+            }
+            .externalLink .earth{
+                position:absolute;
+                width:50%;
+                height:50%;
+                right:0;
+                bottom:0;
+            }
         </style>
 
 
@@ -224,7 +253,7 @@
                             200: "0_piti_alkoholu.png",
                             1000: "100_piti_alkoholu.png"
                         },
-                        "zoomTreshold": 13
+                        "zoomTreshold": 15
                     },
                     /* nature_reserve nebudou */
                     /*
@@ -253,8 +282,6 @@
 
                 async.parallel(myLayers, function (err, layerArray) {
 
-                    //final function
-                    console.log("yay" + layerArray.length);
 
                     //RENDERING THE MAP
 
@@ -330,6 +357,50 @@
                             } else if (typeof layerArray[i].getNearest === "function") {
                                 text += layerArray[i].report(coordinate);
                             }
+                        }
+                        //external links
+                        /*
+                         vítr
+                         https://www.windyty.com/?50.063,14.348,15 (poslední číslo je zoom, při velkém zoomu by to mělo ukázat jako podklad mapy.cz)
+                         
+                         mapy
+                         https://mapy.cz/turisticka?x=14.3340789&y=50.0805328&z=16 (poslední číslo je opět zoom)
+                         
+                         počasí
+                         https://www.yr.no/place/Czech_Republic/Prague/Prague/ (asi jde jenom po městech, ale to  nám nevadí... je tu i vítr, ale není to tak pěkný jako u windyty, jsou tu i srážky ale ne radar - viz níže)
+                         
+                         NaOvoce
+                         https://na-ovoce.cz/cs/mapa/#17/50.08799/14.35398 (číslo za # je zoom)
+                         
+                         srážky
+                         http://portal.chmi.cz//files/portal/docs/meteo/rad/data_jsradview.html
+                         */
+
+                        var gps = ol.proj.transform(coordinate, 'EPSG:900913', 'EPSG:4326');
+                        console.log(gps);
+
+                        var externalLinks = [
+                            {"address": "https://www.windyty.com/?%LAT,%LON,%ZOOM",
+                                "title": "Síla větru",
+                                "ico": "https://www.windyty.com/img/favicons/apple-touch-icon-144x144.png"
+                            },
+                            {"address": "https://mapy.cz/turisticka?x=%LON&y=%LAT&z=%ZOOM ",
+                                "title": "Mapy.cz",
+                                "ico": "https://www.windyty.com/img/favicons/apple-touch-icon-144x144.png"
+                            },
+                            {"address": "https://na-ovoce.cz/cs/mapa/#%ZOOM/%3LAT/%3LON",
+                                "title": "Na Ovoce",
+                                "ico": "https://www.windyty.com/img/favicons/apple-touch-icon-144x144.png"
+                            },
+                        ]
+                        for (var k in externalLinks) {
+                            var addr = externalLinks[k].address
+                                    .replace("%3LAT", Math.round(gps[1] * 1000) / 1000)
+                                    .replace("%3LON", Math.round(gps[0] * 1000) / 1000)
+                                    .replace("%LAT", gps[1])
+                                    .replace("%LON", gps[0])
+                                    .replace("%ZOOM", map.getView().getZoom());
+                            text += "<div class=\"Link\"><a href=\"" + addr + "\" class=\"externalLink\" title=\"" + externalLinks[k].title + "\"><img src=\"" + externalLinks[k].ico + "\" class=\"logo\"><img src=\"gfx/odkazy.png\" class=\"earth\"></a></div>"
                         }
                         showInfo(text);
                     });
@@ -409,6 +480,6 @@
 
         <div id="map" class="map"></div>
         <div id="popup"></div>
-        <div id="info">This is fixed overlay</div>
+        <div id="info"><h2>Klikněte do mapy...</h2></div>
     </body>
 </html>
