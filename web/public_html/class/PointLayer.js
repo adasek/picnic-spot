@@ -77,9 +77,9 @@ PointLayer.prototype.getVector = function () {
         if (typeof (this.poiIco) === "string" && this.poiIco.length > 0) {
             //PNG image is the POI icon    
             poiImage = new ol.style.Style({
-                image: new ol.style.Icon({src: this.poiIco,
+                image: new ol.style.Icon({src: "icons/" + this.poiIco,
                     size: [300, 300],
-                    scale: 0.33
+                    scale: 0.25
                 })
             })
         }
@@ -156,7 +156,7 @@ PointLayer.prototype.report = function (coordinate) {
 
 
     var iconFile = this.determineIcon(coordinate);
-    
+
     var distance = Math.round(nearest.distance); //in meters
     return "<div class=\"PointLayer Layer\"><img src=\"icons/" + iconFile + "\" " +
             " alt=\"Nejbližší " + this.name + " je " + distance + "m\"><div class=\"Value Distance\">" + distance + "m</div></div>";
