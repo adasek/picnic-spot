@@ -402,15 +402,15 @@
                         var externalLinks = [
                             {"address": "https://www.windyty.com/?%LAT,%LON,%ZOOM",
                                 "title": "Síla větru",
-                                "ico": "https://www.windyty.com/img/favicons/apple-touch-icon-144x144.png"
+                                "ico": "gfx/links/windyty.png"
                             },
                             {"address": "https://mapy.cz/turisticka?x=%LON&y=%LAT&z=%ZOOM ",
                                 "title": "Mapy.cz",
-                                "ico": "https://www.windyty.com/img/favicons/apple-touch-icon-144x144.png"
+                                "ico": "gfx/links/mapy.png"
                             },
                             {"address": "https://na-ovoce.cz/cs/mapa/#%ZOOM/%3LAT/%3LON",
                                 "title": "Na Ovoce",
-                                "ico": "https://www.windyty.com/img/favicons/apple-touch-icon-144x144.png"
+                                "ico": "gfx/links/naovoce.png"
                             },
                         ]
                         for (var k in externalLinks) {
@@ -420,7 +420,7 @@
                                     .replace("%LAT", gps[1])
                                     .replace("%LON", gps[0])
                                     .replace("%ZOOM", map.getView().getZoom());
-                            text += "<div class=\"Link\"><a href=\"" + addr + "\" class=\"externalLink\" title=\"" + externalLinks[k].title + "\"><img src=\"" + externalLinks[k].ico + "\" class=\"logo\"><img src=\"gfx/odkazy.png\" class=\"earth\"></a></div>"
+                            text += "<div class=\"Link\"><a href=\"" + addr + "\" class=\"externalLink\" title=\"" + externalLinks[k].title + "\"><img src=\"" + externalLinks[k].ico + "\" class=\"logo\"></a></div>"
                         }
                         showInfo(text);
                     });
