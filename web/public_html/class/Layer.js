@@ -21,6 +21,8 @@ var Layer = function (opts) {
         //ShapeLayer:
         //key: maximum normalized value of property, value: icon name
         this.icons = opts.icons;
+    } else if (opts.icons === false) {
+        this.icons = false;
     }
 
     /**

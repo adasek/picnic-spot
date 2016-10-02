@@ -162,12 +162,17 @@ PointLayer.prototype.report = function (coordinate) {
 
     var distance = Math.round(nearest.distance); //in meters
 
-    var ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
-            " alt=\"Nejbližší " + this.name + " je " + distance + "m\"><div class=\"Value Distance\">" + distance + "m</div></div>";
-
-    if (this.dontshowmeters) {
+    var ret = "";
+    if (this.icons === false) {
+        //dont show entirely
+        ret = "";
+    } else if (this.dontshowmeters) {
         ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
                 " ></div>";
+    } else {
+        ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
+                " alt=\"Nejbližší " + this.name + " je " + distance + "m\"><div class=\"Value Distance\">" + distance + "m</div></div>";
+
     }
 
     return ret;

@@ -128,7 +128,7 @@
                             200: "50_ohniste.png",
                             1000: "0_ohniste.png"
                         },
-                        "zoomTreshold": 12
+                        "zoomTreshold": 14
                     }, {
                         "class": "PointLayer",
                         "name": "grill",
@@ -140,7 +140,7 @@
                             200: "50_gril.png",
                             1000: "0_gril.png"
                         },
-                        "zoomTreshold": 12
+                        "zoomTreshold": 14
                     }, {
                         "class": "PointLayer",
                         "name": "Pítko/studánka",
@@ -241,7 +241,7 @@
                             100: "50_posezeni.png",
                             1000: "0_posezeni.png"
                         },
-                        "zoomTreshold": 13
+                        "zoomTreshold": 14
                     }, {
                         "class": "PointLayer",
                         "name": "Zákaz alkoholu",
@@ -254,7 +254,27 @@
                             1000: "100_piti_alkoholu.png"
                         },
                         "zoomTreshold": 15
-                    },
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Doporučené místo Praha Zelená",
+                        "file": "data/kosiky_praha_zelena.gpx",
+                        "type": "gpx",
+                        "poiIco": "100_piknik.png",
+                        "icons": false,
+                        "zoomTreshold": 10
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Klidné místo",
+                        "file": "data/klidna_mista.gpx",
+                        "type": "gpx",
+                        "poiIco": "100_klidna_oblast.png",
+                        "icons": {
+                            100: "100_klidna_oblast.png",
+                            200: "50_klidna_oblast.png",
+                            1000: "0_klidna_oblast.png"
+                        },
+                        "zoomTreshold": 14
+                    }
                     /* nature_reserve nebudou */
                     /*
                      /*
@@ -316,9 +336,9 @@
                         layers: [layers[0]],
                         target: 'map',
                         view: new ol.View({
-                            center: ol.proj.transform([14.52301, 50.1083], 'EPSG:4326', 'EPSG:3857'),
+                            center: ol.proj.transform([14.3969197, 50.0815394], 'EPSG:4326', 'EPSG:3857'),
                             extent: [tl[0], tl[1], br[0], br[1]],
-                            zoom: 15,
+                            zoom: 13,
                             minZoom: 12,
                             maxZoom: 19
                         })
@@ -377,8 +397,8 @@
                          */
 
                         var gps = ol.proj.transform(coordinate, 'EPSG:900913', 'EPSG:4326');
-                        console.log(gps);
-
+                        
+                        
                         var externalLinks = [
                             {"address": "https://www.windyty.com/?%LAT,%LON,%ZOOM",
                                 "title": "Síla větru",

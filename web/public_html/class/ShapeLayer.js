@@ -79,8 +79,8 @@ ShapeLayer.prototype.getVector = function () {
     var vector = new ol.layer.Vector({
         source: this.vectorSource
     });
-    
-    this.vector=vector;
+
+    this.vector = vector;
     return vector;
 
 };
@@ -193,7 +193,10 @@ ShapeLayer.prototype.report = function (coordinate) {
     if (v === undefined) {
         return "";
     }
-    return "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
-            " alt=\"Hodnota " + this.name + " je " + v + " z " + this.minMax[1] + "\"><div class=\"Value Quality\">" + v + "/" + this.minMax[1] + "</div></div>";
-
+    if (this.icons !== false) {
+        return "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
+                " alt=\"Hodnota " + this.name + " je " + v + " z " + this.minMax[1] + "\"><div class=\"Value Quality\">" + v + "/" + this.minMax[1] + "</div></div>";
+    }else{
+        return "";
+    }
 };
