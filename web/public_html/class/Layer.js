@@ -16,7 +16,7 @@ var Layer = function (opts) {
     this.icons = null;
     if (typeof opts.icons === "object") {
         //PointLayer:
-        //Icons: key: maximum distance[m], value: icon name (in directory icons/)
+        //Icons: key: maximum distance[m], value: icon name (in directory gfx/)
         //
         //ShapeLayer:
         //key: maximum normalized value of property, value: icon name
