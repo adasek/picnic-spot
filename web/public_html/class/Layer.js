@@ -34,6 +34,9 @@ var Layer = function (opts) {
      */
     this.zoomTreshold = opts.zoomTreshold;
 
+    if (typeof (opts.dontshowmeters) === "boolean") {
+        this.dontshowmeters = opts.dontshowmeters;
+    }
 
 };
 

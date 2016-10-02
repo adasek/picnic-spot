@@ -161,6 +161,14 @@ PointLayer.prototype.report = function (coordinate) {
     var iconFile = this.determineIcon(coordinate);
 
     var distance = Math.round(nearest.distance); //in meters
-    return "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
+
+    var ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
             " alt=\"Nejbližší " + this.name + " je " + distance + "m\"><div class=\"Value Distance\">" + distance + "m</div></div>";
+
+    if (this.dontshowmeters) {
+        ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
+                " ></div>";
+    }
+
+    return ret;
 };

@@ -46,7 +46,7 @@ done
 #merge platform and stop_position and railway_station subway_entrance tram_stop as mhd_stop
 #todo: add also bus_stop
 
-resultName="mhd_stop";
+resultName="mhd_stop"
 echo '<?xml version="1.0" encoding="utf-8"?>' > ../$resultName.gpx
 echo '<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1">"' >>  ../$resultName.gpx
 for type in platform stop_position railway_station subway_entrance tram_stop highway_bus_stop
@@ -56,7 +56,7 @@ done
 echo '</gpx>' >> ../$resultName.gpx
 
 #merge sports_center sport_pitch into sport
-resultName="sport";
+resultName="sport"
 echo '<?xml version="1.0" encoding="utf-8"?>' > ../$resultName.gpx
 echo '<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1">"' >>  ../$resultName.gpx
 for type in sports_center sport_pitch
@@ -68,7 +68,7 @@ echo '</gpx>' >> ../$resultName.gpx
 
 
 #merge bbq + picnic_site + zidle into sitting
-resultName="sitting";
+resultName="sitting"
 echo '<?xml version="1.0" encoding="utf-8"?>' > ../$resultName.gpx
 echo '<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1">"' >>  ../$resultName.gpx
 for type in bbq picnic_site 
@@ -78,3 +78,13 @@ done
 grep "wpt" ./zidle_wgs.gpx >> ../$resultName.gpx
 echo '</gpx>' >> ../$resultName.gpx
 
+
+
+resultName="alcohol"
+echo '<?xml version="1.0" encoding="utf-8"?>' > ../$resultName.gpx
+echo '<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1">"' >>  ../$resultName.gpx
+ grep "wpt" alkohol_body.gpx >> ../$resultName.gpx 
+#alkohol is disallowed on children playgrounds
+ grep "wpt" ../playground.gpx >> ../$resultName.gpx
+
+echo '</gpx>' >> ../$resultName.gpx
