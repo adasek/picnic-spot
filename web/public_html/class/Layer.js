@@ -23,6 +23,11 @@ var Layer = function (opts) {
         this.icons = opts.icons;
     }
 
+    /**
+     * @type {ol.layer.Base}
+     */
+    this.vector = null;
+
 
 };
 
@@ -86,9 +91,9 @@ Layer.prototype.determineIcon = function (coordinate) {
 
     //TODO: sort object by key ascending.
     //browsers may not iterate through it properly!
-    
+
     var myVal = this.getValueAt(coordinate);
-    
+
     var myIcon = "unknown.png";
     var last = "unknown.png";
     for (var k in this.icons) {

@@ -52,6 +52,9 @@ ShapeLayer.prototype = Object.create(Layer.prototype);
  * @returns {ol.Vector}
  */
 ShapeLayer.prototype.getVector = function () {
+    if (this.vector !== null) {
+        return this.vector;
+    }
 
     var minMax = this.getMinMax(this.propertyName);
 
@@ -76,6 +79,8 @@ ShapeLayer.prototype.getVector = function () {
     var vector = new ol.layer.Vector({
         source: this.vectorSource
     });
+    
+    this.vector=vector;
     return vector;
 
 };

@@ -56,7 +56,9 @@ PointLayer.prototype.downloadGPXfinished = function (err, result) {
  * @returns {undefined}
  */
 PointLayer.prototype.getVector = function () {
-
+    if (this.vector !== null) {
+        return this.vector;
+    }
 
     for (var i = 0; i < this.features.length; i++) {
 
@@ -96,6 +98,7 @@ PointLayer.prototype.getVector = function () {
         source: vectorSource
     });
 
+    this.vector = vector;
     return vector;
 };
 
