@@ -98,7 +98,8 @@
                             50: "100_ohniste.png",
                             200: "50_ohniste.png",
                             1000: "0_ohniste.png"
-                        }
+                        },
+                        "zoomTreshold": 12
                     }, {
                         "class": "PointLayer",
                         "name": "grill",
@@ -109,7 +110,8 @@
                             50: "100_gril.png",
                             200: "50_gril.png",
                             1000: "0_gril.png"
-                        }
+                        },
+                        "zoomTreshold": 12
                     }, {
                         "class": "PointLayer",
                         "name": "Pítko/studánka",
@@ -127,6 +129,7 @@
                         "file": "data/mhd_stop.gpx",
                         "type": "gpx",
                         "poiIco": "100_hromadna_doprava.png",
+                        "zoomTreshold": 17,
                         "icons": {
                             100: "100_hromadna_doprava.png",
                             300: "50_hromadna_doprava.png",
@@ -208,7 +211,8 @@
                             50: "100_posezeni.png",
                             100: "50_posezeni.png",
                             1000: "0_posezeni.png"
-                        }
+                        },
+                        "zoomTreshold": 13
                     },
                     /* nature_reserve nebudou */
                     /*
@@ -291,6 +295,21 @@
 
 
 
+                    function reZoom() {
+                        //On change zoom:
+
+                        //Hide what should be hidden
+                        var newZoom = map.getView().getZoom();
+                        for (var i = 0; i < layerArray.length; i++) {
+                            if (layerArray[i].type === "gpx") {
+                                layerArray[i].zoomedEvent(newZoom);
+                            }
+                        }
+
+                    }
+
+                    map.getView().on('change:resolution', reZoom);
+                    reZoom();
 
                     map.on('click', function (evt) {
                         var coordinate = evt.coordinate;

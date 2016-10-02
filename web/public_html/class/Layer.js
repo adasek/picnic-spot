@@ -28,6 +28,12 @@ var Layer = function (opts) {
      */
     this.vector = null;
 
+    /**
+     * Zoom level of Openlayers from which layer should be hidden
+     * @type {integer}
+     */
+    this.zoomTreshold = opts.zoomTreshold;
+
 
 };
 
@@ -105,4 +111,23 @@ Layer.prototype.determineIcon = function (coordinate) {
     //maximum key is less then myVal
     //use last
     return last;
+};
+
+/***
+ * After zoom we need to set this visible/invisible
+ * @type type
+ 
+ */
+Layer.prototype.zoomedEvent = function (zoomLevel) {
+
+    if (typeof (this.zoomTreshold) !== "number") {
+        this.zoomTreshold = 15;
+    }
+
+
+    if (this.zoomTreshold <= zoomLevel) {
+        this.getVector().setVisible(true);
+    } else {
+        this.getVector().setVisible(false);
+    }
 };
