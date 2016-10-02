@@ -57,9 +57,11 @@
                 min-width:20em;
                 min-height:20em;
                 background-color:white;
-                background-color:rgba(255,255,255,0.5);
+                background-color:rgba(255,255,255,0.8);
                 padding:1vmin;
             }
+
+            #info .Layer {float:left;width:20%;}
 
 
         </style>
@@ -79,28 +81,57 @@
                         "class": "ShapeLayer",
                         "name": "Sun intensity",
                         "file": "data/OVZ_Klima_Osluneni_p.json",
-                        "property": "GRIDVALUE"
+                        "property": "GRIDVALUE",
+                        "comment-icons": "Nota bene ShapeLayers ~ higher=better",
+                        "icons": {
+                            2: "0_kvalita_prostredi.png",
+                            4: "50_kvalita_prostredi.png",
+                            5: "100_kvalita_prostredi.png"
+                        }
                     }, {
                         "class": "PointLayer",
                         "name": "studánka",
                         "file": "data/studanky.gpx",
                         "type": "gpx",
-                        "poiIco": "icons/nicubunu-RPG-map-symbols-Wishing-Well-2-300px.png"
+                        "poiIco": "100_pitna_voda.png",
+                        "icons": {
+                            50: "100_pitna_voda.png",
+                            100: "50_pitna_voda.png",
+                            1000: "0_pitna_voda.png"
+                        }
                     }, {
                         "class": "PointLayer",
                         "name": "ohniště",
                         "file": "data/ohniste.gpx",
-                        "type": "gpx"
+                        "type": "gpx",
+                        "poiIco": "100_ohniste.png",
+                        "icons": {
+                            50: "100_ohniste.png",
+                            200: "50_ohniste.png",
+                            1000: "0_ohniste.png"
+                        }
                     }, {
                         "class": "PointLayer",
                         "name": "grill",
                         "file": "data/grilly.gpx",
-                        "type": "gpx"
+                        "type": "gpx",
+                        "poiIco": "100_gril.png",
+                        "icons": {
+                            50: "100_gril.png",
+                            200: "50_gril.png",
+                            1000: "0_gril.png"
+                        }
                     }, {
                         "class": "PointLayer",
                         "name": "Pitná voda",
                         "file": "data/drinking_water.gpx",
-                        "type": "gpx"
+                        "type": "gpx",
+                        "poiIco": "100_pitna_voda.png",
+                        "icons": {
+                            50: "100_pitna_voda.png",
+                            100: "50_pitna_voda.png",
+                            1000: "0_pitna_voda.png"
+                        }
                     },
                     /*
                      /*

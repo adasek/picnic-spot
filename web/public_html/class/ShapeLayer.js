@@ -18,7 +18,7 @@
  */
 
 var ShapeLayer = function (opts, cb) {
-    Layer.call(this);
+    Layer.call(this, opts);
 
     this.propertyName = opts.property;
     this.name = opts.name;
@@ -183,5 +183,12 @@ ShapeLayer.prototype.colorScaleStr = function (gValue, minMax) {
 ShapeLayer.prototype.report = function (coordinate) {
     var v = this.getValueAt(coordinate);
     this.getMinMax(this.propertyName);
-    return this.name + " je " + v + " z " + this.minMax[1] + "\n";
+
+    var iconFile = this.determineIcon(coordinate);
+    if (v === undefined) {
+        return "";
+    }
+    return "<div class=\"PointLayer Layer\"><img src=\"icons/" + iconFile + "\" " +
+            " alt=\"Hodnota " + this.name + " je " + v + " z " + this.minMax[1] + "\"><div class=\"Value Quality\">" + v + "/" + this.minMax[1] + "</div></div>";
+
 };

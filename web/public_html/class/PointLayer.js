@@ -17,7 +17,7 @@
  */
 
 var PointLayer = function (opts, cb) {
-    Layer.call(this);
+    Layer.call(this, opts);
 
     this.propertyName = opts.property;
     this.name = opts.name;
@@ -132,6 +132,19 @@ PointLayer.prototype.getNearest = function (location) {
 
 };
 
+/**
+ * In Point layer value is amount of meters from nearest.
+ * It is not normalized.
+ * @param {number[]} location
+ * @returns {undefined}
+ */
+PointLayer.prototype.getValueAt = function (location) {
+
+    var nearestObj = this.getNearest(location);
+    return nearestObj.distance;
+};
+
+
 
 /**
  * Create a human readable string about distance of this kind
@@ -140,5 +153,11 @@ PointLayer.prototype.getNearest = function (location) {
  */
 PointLayer.prototype.report = function (coordinate) {
     var nearest = this.getNearest(coordinate);
-    return "Nejbližší " + this.name + " je " + Math.round(nearest.distance) + "m\n";
+
+
+    var iconFile = this.determineIcon(coordinate);
+    
+    var distance = Math.round(nearest.distance); //in meters
+    return "<div class=\"PointLayer Layer\"><img src=\"icons/" + iconFile + "\" " +
+            " alt=\"Nejbližší " + this.name + " je " + distance + "m\"><div class=\"Value Distance\">" + distance + "m</div></div>";
 };

@@ -11,7 +11,18 @@
  *  
  * @returns {Layer} 
  */
-var Layer = function () {
+var Layer = function (opts) {
+
+    this.icons = null;
+    if (typeof opts.icons === "object") {
+        //PointLayer:
+        //Icons: key: maximum distance[m], value: icon name (in directory icons/)
+        //
+        //ShapeLayer:
+        //key: maximum normalized value of property, value: icon name
+        this.icons = opts.icons;
+    }
+
 
 };
 
@@ -51,7 +62,7 @@ Layer.prototype.downloadFinished = function (responseText) {
         if (this.type === "gpx") {
             this[this._downloadProperty] = responseText;
             this.features = (new ol.format.GPX()).readFeatures(this[this._downloadProperty], {featureProjection: 'EPSG:3857'});
-     
+
         } else {
             //GeoJSON
             this[this._downloadProperty] = JSON.parse(responseText);
@@ -64,4 +75,29 @@ Layer.prototype.downloadFinished = function (responseText) {
         console.error(JSON.stringify(e));
         //console.error(responseText);
     }
+};
+
+
+Layer.prototype.determineIcon = function (coordinate) {
+    //key: maximum normalized value of property, value: icon name
+    if (typeof (this.icons) !== "object") {
+        return "unknown.png";
+    }
+
+    //TODO: sort object by key ascending.
+    //browsers may not iterate through it properly!
+    
+    var myVal = this.getValueAt(coordinate);
+    
+    var myIcon = "unknown.png";
+    var last = "unknown.png";
+    for (var k in this.icons) {
+        if (k > myVal) {
+            return this.icons[k];
+        }
+        last = this.icons[k];
+    }
+    //maximum key is less then myVal
+    //use last
+    return last;
 };
