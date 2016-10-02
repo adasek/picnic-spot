@@ -324,6 +324,44 @@
                         showInfo(text);
                     });
 
+
+                    //show some symbol on clicked position
+
+                    var clickSource = new ol.source.Vector({wrapX: false});
+                    var clickVector = new ol.layer.Vector({
+                        source: clickSource,
+                        style: new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color: 'rgba(0,0,0,0.5)'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: '#ffcc33',
+                                width: 2
+                            }),
+                            image: new ol.style.Circle({
+                                radius: 10,
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(0,0,0,0.5)'
+                                })
+                            })
+                        })
+                    });
+                    map.addLayer(clickVector);
+                    var draw; // global so we can remove it later
+                    function addInteraction() {
+                        draw = new ol.interaction.Draw({
+                            source: clickSource,
+                            type: /** @type {ol.geom.GeometryType} */ "Point",
+                            style: new ol.style.Style({})
+                        });
+                        draw.on("drawend", function (dr) {
+                            clickSource.clear();
+                        })
+                        //draw.removeLastPoint();
+                        map.addInteraction(draw);
+                    }
+                    addInteraction();
+
                     //map.addLayer(vector);
 
                     /* http://openlayers.org/en/master/examples/popup.html */
@@ -331,8 +369,7 @@
                         element: document.getElementById('popup'),
                         position: ol.proj.fromLonLat([14.52301, 50.1083]),
                         positioning: "top-center"
-                    }
-                    );
+                    });
                     map.addOverlay(popup);
 
                 }
