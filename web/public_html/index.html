@@ -61,7 +61,7 @@
                 padding:1vmin;
             }
 
-            #info .Layer {float:left;width:20%;}
+            #info .Layer {float:left;width:20%;height:33%}
 
 
         </style>
@@ -90,17 +90,6 @@
                         }
                     }, {
                         "class": "PointLayer",
-                        "name": "studánka",
-                        "file": "data/studanky.gpx",
-                        "type": "gpx",
-                        "poiIco": "100_pitna_voda.png",
-                        "icons": {
-                            50: "100_pitna_voda.png",
-                            100: "50_pitna_voda.png",
-                            1000: "0_pitna_voda.png"
-                        }
-                    }, {
-                        "class": "PointLayer",
                         "name": "ohniště",
                         "file": "data/ohniste.gpx",
                         "type": "gpx",
@@ -123,7 +112,7 @@
                         }
                     }, {
                         "class": "PointLayer",
-                        "name": "Pitná voda",
+                        "name": "Pítko/studánka",
                         "file": "data/drinking_water.gpx",
                         "type": "gpx",
                         "poiIco": "100_pitna_voda.png",
@@ -132,7 +121,96 @@
                             100: "50_pitna_voda.png",
                             1000: "0_pitna_voda.png"
                         }
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Zastávka MHD",
+                        "file": "data/mhd_stop.gpx",
+                        "type": "gpx",
+                        "poiIco": "100_hromadna_doprava.png",
+                        "icons": {
+                            100: "100_hromadna_doprava.png",
+                            300: "50_hromadna_doprava.png",
+                            1000: "0_hromadna_doprava.png"
+                        }
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Sportoviště",
+                        "file": "data/sport.gpx",
+                        "type": "gpx",
+                        "poiIco": "100_sportoviste.png",
+                        "icons": {
+                            100: "100_sportoviste.png",
+                            300: "50_sportoviste.png",
+                            1000: "0_sportoviste.png"
+                        }
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Parkoviště",
+                        "file": "data/parking.gpx",
+                        "type": "gpx",
+                        "poiIco": "100_parkoviste.png",
+                        "icons": {
+                            100: "100_parkoviste.png",
+                            300: "50_parkoviste.png",
+                            1000: "0_parkoviste.png"
+                        }
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Parkoviště",
+                        "file": "data/toilets.gpx",
+                        "type": "gpx",
+                        "poiIco": "100_verejne_zachody.png",
+                        "icons": {
+                            50: "100_verejne_zachody.png",
+                            200: "50_verejne_zachody.png",
+                            1000: "0_verejne_zachody.png"
+                        }
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Výhled",
+                        "file": "data/viewpoint.gpx",
+                        "type": "gpx",
+                        "poiIco": "100_vyhlidka.png",
+                        "icons": {
+                            50: "100_vyhlidka.png",
+                            200: "50_vyhlidka.png",
+                            1000: "0_vyhlidka.png"
+                        }
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Dětské hřiště",
+                        "file": "data/playground.gpx",
+                        "type": "gpx",
+                        "poiIco": "100_detska_hriste.png",
+                        "icons": {
+                            100: "100_detska_hriste.png",
+                            300: "50_detska_hriste.png",
+                            1000: "0_detska_hriste.png"
+                        }
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Koš/kontejnery",
+                        "file": "data/waste_basket.gpx",
+                        "type": "gpx",
+                        "poiIco": "100_kose_a_kontejnery.png",
+                        "icons": {
+                            50: "100_kose_a_kontejnery.png",
+                            200: "50_kose_a_kontejnery.png",
+                            1000: "0_kose_a_kontejnery.png"
+                        }
+                    }, {
+                        "class": "PointLayer",
+                        "name": "Posezení",
+                        "file": "data/sitting.gpx",
+                        "type": "gpx",
+                        "poiIco": "100_posezeni.png",
+                        "icons": {
+                            50: "100_posezeni.png",
+                            100: "50_posezeni.png",
+                            1000: "0_posezeni.png"
+                        }
                     },
+                    /* nature_reserve nebudou */
                     /*
                      /*
                      //Typical client does not want a 150MB file
@@ -210,6 +288,7 @@
                             map.addLayer(layerArray[i].getVector());
                         }
                     }
+
 
 
 
