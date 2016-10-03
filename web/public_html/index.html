@@ -323,10 +323,17 @@
                         "type": "gpx",
                         "poiIco": "zakaz_alkoholu.png",
                         "dontshowmeters": true,
-                        "icons": {
-                            200: "0_piti_alkoholu.png",
-                            1000: "100_piti_alkoholu.png"
-                        },
+                        "states": [
+                            {
+                                "icon": "0_piti_alkoholu.png",
+                                "maxVal": 200,
+                                "title": "Zákaz pití alkoholu"
+                            },
+                            {
+                                "icon": "100_piti_alkoholu.png",
+                                "title": "Pití alkoholu povoleno"
+                            }
+                        ],
                         "zoomTreshold": 15
                     }, {
                         "class": "PointLayer",

@@ -156,24 +156,33 @@ PointLayer.prototype.getValueAt = function (location) {
  */
 PointLayer.prototype.report = function (coordinate) {
     var nearest = this.getNearest(coordinate);
-
-
-    var iconFile = this.determineIcon(coordinate);
-
     var distance = Math.round(nearest.distance); //in meters
 
-    var ret = "";
+    var title = "";
+    var valString = "";
     if (this.icons === false) {
-        //dont show entirely
-        ret = "";
+        title = "";
     } else if (this.dontshowmeters) {
-        ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
-                " title=\""+this.name+"\"></div>";
+        title = this.name;
     } else {
-        ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
-                " title=\"Nejbližší " + this.name + " je " + distance + "m\"><div class=\"Value Distance\">" + distance + "m</div></div>";
-
+        title = "Nejbližší " + this.name + " je " + distance + "m";
+        valString = "<div class=\"Value Distance\">" + distance + "m</div>";
     }
 
+    var iconFile = this.determineIcon(coordinate);
+    if (typeof (iconFile) === "object") {
+        //new interfacec of determineIcon function
+        if (typeof (iconFile.title) === "string") {
+            title = iconFile.title;
+        }
+        iconFile = iconFile.icon;
+    }
+
+
+    var ret = "";
+    if (this.icons !== false) {
+        ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
+                " title=\"" + title + "\">" + valString + "</div>";
+    }
     return ret;
 };

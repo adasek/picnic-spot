@@ -25,6 +25,11 @@ var Layer = function (opts) {
         this.icons = false;
     }
 
+    this.states = undefined;
+    if (typeof opts.states === "object" && Array.isArray(opts.states)) {
+        this.states = opts.states;
+    }
+
     /**
      * @type {ol.layer.Base}
      */
@@ -93,29 +98,53 @@ Layer.prototype.downloadFinished = function (responseText) {
     }
 };
 
-
+/**
+ * Returns two kind of values: either a string (filename) or object (state)
+ * @param {type} coordinate
+ * @returns {String|Object}
+ */
 Layer.prototype.determineIcon = function (coordinate) {
     //key: maximum normalized value of property, value: icon name
-    if (typeof (this.icons) !== "object") {
+    if (typeof (this.icons) !== "object" && typeof (this.states) !== "object") {
         return "unknown.png";
     }
 
-    //TODO: sort object by key ascending.
-    //browsers may not iterate through it properly!
-
     var myVal = this.getValueAt(coordinate);
 
-    var myIcon = "unknown.png";
-    var last = "unknown.png";
-    for (var k in this.icons) {
-        if (k > myVal) {
-            return this.icons[k];
+    if (typeof (this.states) === "object") {
+        //NEW WAY
+        var myState = null;
+        var myMin = 999999;
+        for (var i = 0; i < this.states.length; i++) {
+            if (typeof (this.states[i].maxVal) === "number" && this.states[i].maxVal > myVal && myMin > this.states[i].maxVal) {
+                //prioritized is anything with maxVal defined (lowest acceptable)
+                myMin = this.states.maxVal;
+                myState = this.states[i];
+            } else if (typeof (this.states[i].maxVal) !== "number" && myState === null) {
+                //item without maxVal is default
+                myState = this.states[i];
+            }
         }
-        last = this.icons[k];
+        return myState; //Returns Object!
+
+    } else {
+        //OLD WAY
+        //TODO: sort object by key ascending.
+        //browsers may not iterate through it properly!
+
+
+        var myIcon = "unknown.png";
+        var last = "unknown.png";
+        for (var k in this.icons) {
+            if (k > myVal) {
+                return this.icons[k];
+            }
+            last = this.icons[k];
+        }
+        //maximum key is less then myVal
+        //use last
+        return last;
     }
-    //maximum key is less then myVal
-    //use last
-    return last;
 };
 
 /***
