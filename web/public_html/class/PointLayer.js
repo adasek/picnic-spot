@@ -168,10 +168,10 @@ PointLayer.prototype.report = function (coordinate) {
         ret = "";
     } else if (this.dontshowmeters) {
         ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
-                " ></div>";
+                " title=\""+this.name+"\"></div>";
     } else {
         ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
-                " alt=\"Nejbližší " + this.name + " je " + distance + "m\"><div class=\"Value Distance\">" + distance + "m</div></div>";
+                " title=\"Nejbližší " + this.name + " je " + distance + "m\"><div class=\"Value Distance\">" + distance + "m</div></div>";
 
     }
 
