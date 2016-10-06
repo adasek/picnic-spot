@@ -1,0 +1,8 @@
+node_modules
+
+data/*
+data/src
+data/src/*
+data/src/script.sh
+
+nbproject/private

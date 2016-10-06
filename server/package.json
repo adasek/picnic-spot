@@ -1,0 +1,10 @@
+{
+    "name": "piknik-server",
+    "version": "1.0.0",
+    "keywords": ["util", "functional", "server", "client", "browser"],
+    "author": "Adam Benda",
+    "contributors": [],
+    "dependencies": {
+        "turf": "3.0.14"
+    }
+}
