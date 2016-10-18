@@ -103,7 +103,7 @@ SpatialArray.prototype.insertingFinished = function () {
         }
     }
     for (var i = 0; i < lengths.length; i++) {
-        console.log("len" + i + " = " + lengths[i]);
+        //console.log("len" + i + " = " + lengths[i]);
     }
 
 
