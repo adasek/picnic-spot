@@ -9,7 +9,8 @@ var turf = require('turf');
 
 var SpatialArray = require('./class/SpatialArray');
 
-var osluneni = JSON.parse(fs.readFileSync('./data/OVZ_Klima_Osluneni_p.json'));
+var osluneni = JSON.parse(fs.readFileSync('./data/HM_Ekola_den_p.json'));
+//var osluneni = JSON.parse(fs.readFileSync('./data/OVZ_Klima_Osluneni_p.json'));
 
 var point = {
     "type": "Feature",
@@ -26,12 +27,15 @@ var point = {
  }
  }
  */
-var osluneniA = new SpatialArray(turf.bbox(osluneni), osluneni.features.length);
+
+var polygonCount = 1000000; //todo: count polygons prior 
+
+var osluneniA = new SpatialArray(turf.bbox(osluneni), polygonCount);
 
 var f_key, feature;
 for (f_key in osluneni.features) {
     feature = osluneni.features[f_key];
-    osluneniA.addFeature(turf.bbox(feature), feature);
+    osluneniA.addFeature(feature);
 }
 osluneniA.insertingFinished();
 
@@ -45,13 +49,15 @@ for (f_key in osluneni.features) {
         nearest = feature;
     }
 }
+//console.log(nearest);
+console.log(JSON.stringify(nearest.properties));
 var endTime = new Date();
 
-console.log(nearest);
 
 
 var startTime2 = new Date();
-console.log((osluneniA.findItem(point.geometry.coordinates)).features[0]);
+var found = osluneniA.findItem(point.geometry.coordinates).features[0];
+console.log(JSON.stringify(found.properties));
 var endTime2 = new Date();
 
 console.log("O(n) approach " + (endTime - startTime));

@@ -47,11 +47,28 @@ SpatialArray = function (bbox, featuresCount) {
 
 /**
  * Insert object with some bounding box into the QuadTree
- * @param {Array<number>} bbox - an Array of bounding box coordinates in the form: [xLow, yLow, xHigh, yHigh]
  * @param {Feature} item - feature with a corresponding bounding box
  * @returns {undefined}
  */
-SpatialArray.prototype.addFeature = function (bbox, item) {
+SpatialArray.prototype.addFeature = function (item) {
+
+    //bbox = an Array of bounding box coordinates in the form: [xLow, yLow, xHigh, yHigh]
+    var bbox = turf.bbox(item);
+
+    if (typeof (item.geometry) !== "undefined" && item.geometry.type === "MultiPolygon") {
+        //console.log(JSON.stringify(item));
+        //Split Multipolygon into polygons
+        //My qualities
+        var properties = item.properties; //no deep copy!
+
+        item.geometry.coordinates.forEach(function (coords) {
+            var feat = {'type': 'Feature', 'properties': properties, 'geometry': {'type': 'Polygon', 'coordinates': coords}};
+            this.addFeature(feat);
+        }.bind(this));
+        return;
+    }
+
+
     var top_left = this.getIndex(bbox[0], bbox[1]);
     var bottom_right = this.getIndex(bbox[2], bbox[3]);
     //console.log(": addFeature");
