@@ -19,3 +19,4 @@ name="$2"
 
 zipShp "http://opendata.iprpraha.cz/CUR/HM/HM_Ekola_den_p/WGS_84/HM_Ekola_den_p_shp.zip" "HM_Ekola_den_p"
 
+zipShp "http://opendata.iprpraha.cz/CUR/URK/URK_SS_VyuzitiZakl_p/WGS_84/URK_SS_VyuzitiZakl_p_shp.zip" URK_SS_VyuzitiZakl_p
