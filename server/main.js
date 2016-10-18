@@ -85,7 +85,7 @@ for (var i = 0; i < testRes1.length; i++) {
         console.log("Not similar " + i);
         console.log(JSON.stringify(testRes1[i].properties));
         console.log(JSON.stringify(testRes2[i].properties));
-        return;
+        throw "Results are not consistent";
     }
 }
 console.log("Mem test check: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
