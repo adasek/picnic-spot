@@ -20,15 +20,23 @@ var resourceA = new SpatialArray([14.2, 49.93, 14.72, 50.2]);
 //HM_Ekola_den_p
 var stream = fs.createReadStream('data/URK_SS_VyuzitiZakl_p.json', {flags: 'r', encoding: 'utf-8'});
 
-var resource = {"type": "FeatureCollection", "features": []};
 
 stream.pipe(JSONStream.parse('features.*'))
         .on('data', function (d) {
-            //console.log("Mem: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
 
             resourceA.addFeature(d);
         }).
         on('end', function () {
+            console.log("Mem1: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
+            stream.close();
+            stream.destroy();
+            if (typeof (global.gc) !== "function") {
+                console.error("Use --expose_gc parameter to explicit gc");
+            } else {
+                global.gc();
+            }
+            console.log("Mem2: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
+
             resourceA.insertingFinished();
 
             //Test points
