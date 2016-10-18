@@ -20,7 +20,7 @@ SpatialArray = function (bbox, featuresCount) {
      * Number of "boxes" in x-coordinate
      * @type {integer}
      */
-    this.XCNT = 100;
+    this.XCNT = 1000;
     if (typeof (featuresCount) === "number" && featuresCount > 0) {
         this.XCNT = Math.ceil(Math.sqrt(featuresCount));
     }
@@ -28,7 +28,7 @@ SpatialArray = function (bbox, featuresCount) {
      * Number of "boxes" in x-coordinate
      * @type {integer}
      */
-    this.YCNT = 100;
+    this.YCNT = 1000;
     if (typeof (featuresCount) === "number" && featuresCount > 0) {
         this.YCNT = Math.ceil(Math.sqrt(featuresCount));
     }
@@ -118,9 +118,11 @@ SpatialArray.prototype.insertingFinished = function () {
 SpatialArray.prototype.getIndex = function (xcoord, ycoord) {
     //[xLow, yLow, xHigh, yHigh]
     if (xcoord > this.bbox[2] || xcoord < this.bbox[0]) {
+        console.error("x=" + xcoord + ", y=" + ycoord);
         throw "Point not within the structure.";
     }
     if (ycoord < this.bbox[1] || ycoord > this.bbox[3]) {
+        console.error("x=" + xcoord + ", y=" + ycoord);
         throw "Point not within the structure.";
     }
     var xIndex = Math.round((this.XCNT - 1) * ((xcoord - this.bbox[0]) / (this.bbox[2] - this.bbox[0])));

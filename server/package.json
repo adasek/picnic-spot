@@ -5,6 +5,7 @@
     "author": "Adam Benda",
     "contributors": [],
     "dependencies": {
-        "turf": "3.0.14"
+        "turf": "3.0.14",
+        "JSONStream": "1.2.1"
     }
 }
