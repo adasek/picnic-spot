@@ -9,8 +9,10 @@ var turf = require('turf');
 
 var SpatialArray = require('./class/SpatialArray');
 
+console.log("Mem begin: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
 
 var osluneni = JSON.parse(fs.readFileSync('./data/HM_Ekola_den_p.json'));
+console.log("Mem after read file: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
 //var osluneni = JSON.parse(fs.readFileSync('./data/OVZ_Klima_Osluneni_p.json'));
 
 /*
@@ -24,12 +26,14 @@ var osluneni = JSON.parse(fs.readFileSync('./data/HM_Ekola_den_p.json'));
  */
 
 var testPoints = (turf.random('point', 1000, {'bbox': [14.3242211, 50.0507947, 14.5278114, 50.1012511]}));
+console.log("Mem testPoints: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
 
 var testRes1 = [];
 var testRes2 = [];
 
 
 var osluneniA = new SpatialArray(turf.bbox(osluneni));
+console.log("Mem SpatialArray: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
 
 var f_key, feature;
 for (f_key in osluneni.features) {
@@ -37,6 +41,7 @@ for (f_key in osluneni.features) {
     osluneniA.addFeature(feature);
 }
 osluneniA.insertingFinished();
+console.log("Mem SpatialArray filled: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
 
 var startTime = new Date();
 
@@ -58,6 +63,7 @@ for (var i = 0; i < testPoints.features.length; i++) {
 
 var endTime = new Date();
 
+console.log("Mem O(n): " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
 
 
 var startTime2 = new Date();
@@ -66,6 +72,7 @@ for (var i = 0; i < testPoints.features.length; i++) {
     testRes2.push(osluneniA.findItem(testPoints.features[i].geometry.coordinates).features[0]);
 }
 var endTime2 = new Date();
+console.log("Mem SpatialArray finished: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
 
 //Test that results are the same
 for (var i = 0; i < testRes1.length; i++) {
@@ -81,6 +88,7 @@ for (var i = 0; i < testRes1.length; i++) {
         return;
     }
 }
+console.log("Mem test check: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
 
 console.log("O(n) approach " + (endTime - startTime));
 console.log("SpatialArray approach " + (endTime2 - startTime2));
