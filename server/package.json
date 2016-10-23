@@ -1,12 +1,11 @@
 {
     "name": "piknik-server",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "keywords": ["util", "functional", "server", "client", "browser"],
     "author": "Adam Benda",
     "contributors": [],
     "dependencies": {
-        "turf": "3.0.14",
-        "JSONStream": "1.2.1",
-        "async": "2.1.2"
+        "async": "2.1.2",
+        "pg":"6.1.0"
     }
 }

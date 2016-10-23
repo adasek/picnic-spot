@@ -6,79 +6,87 @@
 var fs = require('fs');
 
 var turf = require('turf');
-
 var async = require('async');
 
-
-var JSONStream = require('JSONStream');
-
-var SpatialArray = require('./class/SpatialArray');
-var DataSet = require('./class/DataSet');
-
-console.log("Mem begin: " + Math.round(JSON.stringify(process.memoryUsage().heapUsed / 1024 / 1024)) + "MB");
-console.log("Heap limit: " + Math.round(require('v8').getHeapStatistics().heap_size_limit / 1024 / 1024) + "MB");
-
-var resourceA = new SpatialArray([14.2, 49.93, 14.72, 50.2]);
-
-//URK_SS_VyuzitiZakl_p is not working on Ubuntu 16.04 !
-//HM_Ekola_den_p
-//var stream = fs.createReadStream('data/URK_SS_VyuzitiZakl_p.json', {flags: 'r', encoding: 'utf-8'});
-
+var pg = require('pg');
 
 var dataSources = [
-     {
-     "filename": "data/URK_SS_VyuzitiZakl_p.json",
-     "particles": 1000000,
-     "name": "vyuziti"
-     },
     {
-        "filename": "data/HM_Ekola_den_p.json",
-        "particles": 10000,
-        "name": "hluk-den"
-    },
-    {
-        "filename": "data/OVZ_Klima_Osluneni_p.json",
-        "particles": 10000,
-        "name": "osluneni"
+        "table": "ovz_klima_osluneni_p ",
+        "items": ["gridvalue"]
+    }, {
+        "table": "hm_ekola_den_p",
+        "items": ["db_lo", "db_hi"]
+    }, {
+        "table": "urk_ss_vyuzitizakl_p",
+        "items": ["zastupna_f", "za_prahou", "kod", "kod_polyfc", "verej_pris"]
     }
 ];
 
-loadDataS = [];
-for (var i = 0; i < dataSources.length; i++) {
-    dataSources[i].dataSet = new DataSet(dataSources[i]);
-    loadDataS.push(dataSources[i].dataSet.parseFromFile.bind(dataSources[i].dataSet, dataSources[i].filename));
-}
-
-
-
-async.parallel(loadDataS, function (err, results) {
-    if (err !== null) {
-        console.error(err);
-        throw "Load was not successfull";
-    }
-
-    console.log("Loaded");
-
-    var start = new Date();
-    //Test points
-    var testPoints = (turf.random('point', 1000, {'bbox': [14.3242211, 50.0507947, 14.5278114, 50.1012511]}));
-
-    for (var i = 0; i < testPoints.features.length; i++) {
-        console.log("POINT=" + JSON.stringify(testPoints.features[i].geometry.coordinates));
-        //now every dataSource should be loaded
-        for (var n = 0; n < dataSources.length; n++) {
-            var found = dataSources[n].dataSet.getProperty(testPoints.features[n].geometry.coordinates);
-            if (typeof (found) !== "undefined") {
-                console.log(JSON.stringify(found));
-            } else {
-                console.log("N/A");
-            }
-
-        }
-        console.log("------");
-    }
-
-    var end = new Date();
-    console.log("Elapsed:" + (end - start));
-
+//https://github.com/brianc/node-postgres
+var client = new pg.Client({
+    user: 'knp', //env var: PGUSER
+    database: 'knp_praha', //env var: PGDATABASE
+    password: 'fsatqe95oo2', //env var: PGPASSWORD
+    host: '192.168.1.3', // Server hosting the postgres database
+    port: 5432 //env var: PGPORT
 });
+
+loadDataS = [];
+
+//SELECT zastupna_f,za_prahou,kod,kod_polyfc,verej_pris  FROM urk_ss_vyuzitizakl_p
+// WHERE ST_Contains(geom, ST_Point(14.3239917,50.0939344));
+
+/*
+ 
+ **/
+
+client.connect(
+        function (err, result) {
+            if (err) {
+                throw err;
+            }
+            //server is ready to answer
+            console.log("ready");
+
+            var start = new Date();
+            //Test points
+            var testPoints = (turf.random('point', 100, {'bbox': [14.3242211, 50.0507947, 14.5278114, 50.1012511]}));
+            var pointsXSourcesDone = 0;
+
+            for (var i = 0; i < testPoints.features.length; i++) {
+                var lon = testPoints.features[i].geometry.coordinates[0];
+                var lat = testPoints.features[i].geometry.coordinates[1];
+                for (var n = 0; n < dataSources.length; n++) {
+                    var columnsS = dataSources[n].items.join();
+                    var table = dataSources[n].table;
+                    client.query(
+                            {"text": 'SELECT ' + columnsS + ' FROM ' + table + ' WHERE ST_Contains(geom, ST_Point($1::float,$2::float))',
+                                "values": [lon, lat]},
+                            function (opts, err, result) {
+                                console.log("POINT=" + opts.lat + "," + opts.lon);
+                                if (err) {
+                                    throw err;
+                                }
+                                console.log(JSON.stringify(result.rows));
+                                pointsXSourcesDone++;
+                                if (pointsXSourcesDone >= testPoints.features.length * dataSources.length) {
+                                    //end of program
+                                    var end = new Date();
+                                    console.log("Elapsed:" + (end - start));
+
+
+                                    // disconnect the client
+                                    client.end(function (err) {
+                                        if (err) {
+                                            throw err;
+                                        }
+                                    });
+                                }
+
+                            }.bind(client, {"lat": lat, "lon": lon}));
+                }
+            }
+        });
+
+
