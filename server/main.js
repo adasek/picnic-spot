@@ -10,16 +10,18 @@ var async = require('async');
 
 var pg = require('pg');
 
+var DataSet = require('./class/DataSet');
+
 var dataSources = [
     {
         "table": "ovz_klima_osluneni_p ",
-        "items": ["gridvalue"]
+        "columns": ["gridvalue"]
     }, {
         "table": "hm_ekola_den_p",
-        "items": ["db_lo", "db_hi"]
+        "columns": ["db_lo", "db_hi"]
     }, {
         "table": "urk_ss_vyuzitizakl_p",
-        "items": ["zastupna_f", "za_prahou", "kod", "kod_polyfc", "verej_pris"]
+        "columns": ["zastupna_f", "za_prahou", "kod", "kod_polyfc", "verej_pris"]
     }
 ];
 
@@ -46,6 +48,11 @@ client.connect(
             if (err) {
                 throw err;
             }
+
+            for (var n = 0; n < dataSources.length; n++) {
+                dataSources[n].dataset = new DataSet(client, dataSources[n]);
+            }
+
             //server is ready to answer
             console.log("ready");
 
@@ -58,33 +65,28 @@ client.connect(
                 var lon = testPoints.features[i].geometry.coordinates[0];
                 var lat = testPoints.features[i].geometry.coordinates[1];
                 for (var n = 0; n < dataSources.length; n++) {
-                    var columnsS = dataSources[n].items.join();
-                    var table = dataSources[n].table;
-                    client.query(
-                            {"text": 'SELECT ' + columnsS + ' FROM ' + table + ' WHERE ST_Contains(geom, ST_Point($1::float,$2::float))',
-                                "values": [lon, lat]},
-                            function (opts, err, result) {
-                                console.log("POINT=" + opts.lat + "," + opts.lon);
+                    dataSources[n].dataset.getProperty([lon, lat], function (opts, err, result) {
+                        console.log("POINT=" + opts.lat + "," + opts.lon);
+                        if (err) {
+                            throw err;
+                        }
+                        console.log(JSON.stringify(result.rows));
+                        pointsXSourcesDone++;
+                        if (pointsXSourcesDone >= testPoints.features.length * dataSources.length) {
+                            //end of program
+                            var end = new Date();
+                            console.log("Elapsed:" + (end - start));
+
+                            // disconnect the client
+                            client.end(function (err) {
                                 if (err) {
                                     throw err;
                                 }
-                                console.log(JSON.stringify(result.rows));
-                                pointsXSourcesDone++;
-                                if (pointsXSourcesDone >= testPoints.features.length * dataSources.length) {
-                                    //end of program
-                                    var end = new Date();
-                                    console.log("Elapsed:" + (end - start));
+                            });
+                        }
 
+                    }.bind(client, {"lat": lat, "lon": lon}));
 
-                                    // disconnect the client
-                                    client.end(function (err) {
-                                        if (err) {
-                                            throw err;
-                                        }
-                                    });
-                                }
-
-                            }.bind(client, {"lat": lat, "lon": lon}));
                 }
             }
         });
