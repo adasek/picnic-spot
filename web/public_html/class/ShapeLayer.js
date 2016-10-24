@@ -23,7 +23,7 @@ var ShapeLayer = function (opts, cb) {
     this.property = opts.property;
     this.name = opts.name;
     this.serverName = opts.serverName;
-    
+
     /** Array of max and min value of property 
      *  @type {number[]}
      * */
@@ -89,6 +89,9 @@ ShapeLayer.prototype.getVector = function () {
 /**
  *  */
 ShapeLayer.prototype.getValueAt = function (location, networkData) {
+    if (typeof (networkData) === "undefined" || typeof (networkData[this.serverName]) === "undefined") {
+        return null;
+    }
     return networkData[this.serverName][this.property];
 };
 
@@ -176,8 +179,8 @@ ShapeLayer.prototype.report = function (coordinate, networkData) {
     //this.getMinMax(this.propertyName,networkData);
 
     var iconFile = this.determineIcon(coordinate);
-    if (typeof (v) === "undefined") {
-        return "n";
+    if (typeof (v) === "undefined" || v === null) {
+        return "";
     }
     if (this.icons !== false) {
         return "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
