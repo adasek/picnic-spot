@@ -30,7 +30,7 @@ server = http.createServer(function (req, res) {
                 if (err) {
                     throw err;
                 }
-                data[opts.datasetName] = result.rows;
+                data[opts.datasetName] = result.rows[0];
 
                 opts.readyCnt.cnt++;
 
@@ -38,6 +38,7 @@ server = http.createServer(function (req, res) {
                     //last dataset served
                     //send response
 
+                    opts.res.setHeader('Access-Control-Allow-Origin', '*');
                     opts.res.writeHead(200, {'Content-Type': 'application/json'});
                     opts.res.end(JSON.stringify(opts.data, null, 2));
                 }
