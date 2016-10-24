@@ -14,12 +14,12 @@ var DataSet = require('./class/DataSet');
 
 var dataSources = [
     {
-        "table": "ovz_klima_osluneni_p ",
+        "table": "ovz_klima_osluneni_p",
         "columns": ["gridvalue"]
-    }, {
+    },{
         "table": "hm_ekola_den_p",
         "columns": ["db_lo", "db_hi"]
-    }, {
+    },{
         "table": "urk_ss_vyuzitizakl_p",
         "columns": ["zastupna_f", "za_prahou", "kod", "kod_polyfc", "verej_pris"]
     }
