@@ -57,6 +57,8 @@ psql -d knp_praha -c "CREATE TABLE $tablename AS SELECT  *, (ST_DUMP(geom)).geom
 
  psql -d knp_praha -c "DROP TABLE ""$tablename""_source;"
 
+ psql -d knp_praha -c "VACUUM FULL VERBOSE ANALYZE $tablename"
+
  done
 
 psql -d knp_praha -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO knp"
