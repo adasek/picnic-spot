@@ -71,6 +71,10 @@ var dataSources = [
         "name": "vyuziti",
         "table": "urk_ss_vyuzitizakl_p",
         "columns": ["zastupna_f", "za_prahou", "kod", "kod_polyfc", "verej_pris"]
+    }, {
+        "name": "alcohol_ban",
+        "table": "alcohol_ban",
+        "columns": ["value"]
     }
 ];
 
