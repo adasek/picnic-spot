@@ -7,7 +7,6 @@ var fs = require('fs');
 var http = require('http');
 var queryString = require('querystring');
 
-var turf = require('turf');
 var async = require('async');
 
 var pg = require('pg');
