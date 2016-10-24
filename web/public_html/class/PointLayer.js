@@ -157,6 +157,7 @@ PointLayer.prototype.getValueAt = function (location) {
 PointLayer.prototype.report = function (coordinate) {
     var nearest = this.getNearest(coordinate);
     var distance = Math.round(nearest.distance); //in meters
+    this.lastVal = [nearest, distance];
 
     var title = "";
     var valString = "";

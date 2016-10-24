@@ -109,7 +109,8 @@ Layer.prototype.determineIcon = function (coordinate) {
         return "unknown.png";
     }
 
-    var myVal = this.getValueAt(coordinate);
+    //var myVal = this.getValueAt(coordinate);
+    var myVal = this.lastVal;
 
     if (typeof (this.states) === "object") {
         //NEW WAY

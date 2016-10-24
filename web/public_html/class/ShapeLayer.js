@@ -20,24 +20,25 @@
 var ShapeLayer = function (opts, cb) {
     Layer.call(this, opts);
 
-    this.propertyName = opts.property;
+    this.property = opts.property;
     this.name = opts.name;
+    this.serverName = opts.serverName;
+    
+    /** Array of max and min value of property 
+     *  @type {number[]}
+     * */
+    this.minMax = opts.minMax;
 
     this.geojson = {};
 
-    if (typeof (opts.file) !== "string" || opts.file.length === 0) {
-        throw "No filename providen to ShapeLayer";
-    }
-
-    this.download(opts.file, "geojson", cb);
 
     /**
      * Indexed with property value => key is rgb string
      */
     this.colorCache = {};
 
-    /* Array of max and min value of property */
-    this.minMax = null;
+
+    setTimeout(cb, 1);
 };
 
 //Inheritance
@@ -87,24 +88,8 @@ ShapeLayer.prototype.getVector = function () {
 
 /**
  *  */
-ShapeLayer.prototype.getValueAt = function (coordinate) {
-    if (this.vectorSource === null || this.vectorSource === undefined) {
-        this.getVector(function () {
-            return [0, 0, 0, 0];
-        });
-    }
-
-    var features = this.vectorSource.getFeaturesAtCoordinate(coordinate)
-    //test: highlight this feature
-    if (features === null || features.length === 0) {
-        return undefined;
-    }
-    features[0].setStyle(
-            new ol.style.Style({
-                fill: new ol.style.Fill({"color": "#0000ff"})
-            }));
-
-    return features[0].get(this.propertyName);
+ShapeLayer.prototype.getValueAt = function (location, networkData) {
+    return networkData[this.serverName][this.property];
 };
 
 
@@ -185,18 +170,19 @@ ShapeLayer.prototype.colorScaleStr = function (gValue, minMax) {
  * @param {number []} coordinate - two numbers
  * @returns {undefined}
  */
-ShapeLayer.prototype.report = function (coordinate) {
-    var v = this.getValueAt(coordinate);
-    this.getMinMax(this.propertyName);
+ShapeLayer.prototype.report = function (coordinate, networkData) {
+    var v = this.getValueAt(coordinate, networkData);
+    this.lastVal = v;
+    //this.getMinMax(this.propertyName,networkData);
 
     var iconFile = this.determineIcon(coordinate);
-    if (v === undefined) {
-        return "";
+    if (typeof (v) === "undefined") {
+        return "n";
     }
     if (this.icons !== false) {
         return "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
                 " title=\"Hodnota " + this.name + " je " + v + " z " + this.minMax[1] + "\"><div class=\"Value Quality\">" + v + "/" + this.minMax[1] + "</div></div>";
-    }else{
+    } else {
         return "";
     }
 };
