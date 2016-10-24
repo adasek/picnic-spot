@@ -4,6 +4,8 @@
  */
 
 var fs = require('fs');
+var http = require('http');
+var queryString = require('querystring');
 
 var turf = require('turf');
 var async = require('async');
@@ -12,14 +14,61 @@ var pg = require('pg');
 
 var DataSet = require('./class/DataSet');
 
+
+server = http.createServer(function (req, res) {
+    //After connection
+    if (req.url.indexOf('?') >= 0) {
+        var queryParams = queryString.parse(req.url.replace(/^.*\?/, ''));
+        var lon = queryParams["lon"];
+        var lat = queryParams["lat"];
+
+        var data = {};
+        var readyCnt = {"cnt": 0}; //counter of server datasets
+
+        for (var n = 0; n < dataSources.length; n++) {
+            dataSources[n].dataset.getProperty([lon, lat], function (opts, err, result) {
+                if (err) {
+                    throw err;
+                }
+                data[opts.datasetName] = result.rows;
+
+                opts.readyCnt.cnt++;
+
+                if (opts.readyCnt.cnt === opts.datasetsNum) {
+                    //last dataset served
+                    //send response
+
+                    opts.res.writeHead(200, {'Content-Type': 'application/json'});
+                    opts.res.end(JSON.stringify(opts.data, null, 2));
+                }
+            }.bind(client, {
+                "data": data,
+                "readyCnt": readyCnt,
+                "datasetsNum": dataSources.length,
+                "res": res,
+                "datasetName": dataSources[n].name
+            }));
+        }
+    } else {
+        res.statusCode = 404;
+        res.setHeader('Content-Type', 'text/plain');
+        res.end('Resource not found\n');
+    }
+
+});
+
+
 var dataSources = [
     {
+        "name": "osluneni",
         "table": "ovz_klima_osluneni_p",
         "columns": ["gridvalue"]
-    },{
+    }, {
+        "name": "hluk_den",
         "table": "hm_ekola_den_p",
         "columns": ["db_lo", "db_hi"]
-    },{
+    }, {
+        "name": "vyuziti",
         "table": "urk_ss_vyuzitizakl_p",
         "columns": ["zastupna_f", "za_prahou", "kod", "kod_polyfc", "verej_pris"]
     }
@@ -56,39 +105,11 @@ client.connect(
             //server is ready to answer
             console.log("ready");
 
-            var start = new Date();
-            //Test points
-            var testPoints = (turf.random('point', 100, {'bbox': [14.3242211, 50.0507947, 14.5278114, 50.1012511]}));
-            var pointsXSourcesDone = 0;
 
-            for (var i = 0; i < testPoints.features.length; i++) {
-                var lon = testPoints.features[i].geometry.coordinates[0];
-                var lat = testPoints.features[i].geometry.coordinates[1];
-                for (var n = 0; n < dataSources.length; n++) {
-                    dataSources[n].dataset.getProperty([lon, lat], function (opts, err, result) {
-                        console.log("POINT=" + opts.lat + "," + opts.lon);
-                        if (err) {
-                            throw err;
-                        }
-                        console.log(JSON.stringify(result.rows));
-                        pointsXSourcesDone++;
-                        if (pointsXSourcesDone >= testPoints.features.length * dataSources.length) {
-                            //end of program
-                            var end = new Date();
-                            console.log("Elapsed:" + (end - start));
+            server.listen(888, "0.0.0.0", function () {
+                console.log("Server running");
+            });
 
-                            // disconnect the client
-                            client.end(function (err) {
-                                if (err) {
-                                    throw err;
-                                }
-                            });
-                        }
-
-                    }.bind(client, {"lat": lat, "lon": lon}));
-
-                }
-            }
         });
 
 

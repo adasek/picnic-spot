@@ -20,6 +20,11 @@ var DataSet = function (client, opts) {
     if (typeof (opts.table) === "string" && opts.table.length > 0) {
         this.table = opts.table;
     }
+    
+    this.name = "unnamed";
+    if (typeof (opts.name) === "string" && opts.name.length > 0) {
+        this.name = opts.name;
+    }
 
     /**
      * Name of columns in the Postgres geo database
