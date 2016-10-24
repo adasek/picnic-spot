@@ -194,6 +194,24 @@
                     },
                     {
                         "class": "ShapeLayer",
+                        "name": "Zákaz pití alkoholu",
+                        "serverName": "alcohol_ban",
+                        "property": "value",
+                        "minMax": [0, 1],
+                        "states": [
+                            {
+                                "icon": "0_piti_alkoholu.png",
+                                "maxVal": 2,
+                                "title": "Zákaz pití alkoholu"
+                            },
+                            {
+                                "icon": "100_piti_alkoholu.png",
+                                "title": "Pití alkoholu povoleno"
+                            }
+                        ],
+                    },
+                    {
+                        "class": "ShapeLayer",
                         "name": "hluk den",
                         "serverName": "hluk_den",
                         "property": "db_hi",
@@ -332,25 +350,6 @@
                         "zoomTreshold": 14
                     }, {
                         "class": "PointLayer",
-                        "name": "zákaz alkoholu",
-                        "file": "data/alcohol.gpx",
-                        "type": "gpx",
-                        "poiIco": "zakaz_alkoholu.png",
-                        "dontshowmeters": true,
-                        "states": [
-                            {
-                                "icon": "0_piti_alkoholu.png",
-                                "maxVal": 200,
-                                "title": "Zákaz pití alkoholu"
-                            },
-                            {
-                                "icon": "100_piti_alkoholu.png",
-                                "title": "Pití alkoholu povoleno"
-                            }
-                        ],
-                        "zoomTreshold": 15
-                    }, {
-                        "class": "PointLayer",
                         "name": "doporučené místo Praha Zelená",
                         "file": "data/kosiky_praha_zelena.gpx",
                         "type": "gpx",
@@ -483,7 +482,7 @@
                         var xhttp = new XMLHttpRequest();
                         var th = this;
 
-                        var addr = "http://adasek.cz:888/?lon=" + gps[0] + "&lat=" + gps[1];
+                        var addr = "http://localhost:888/?lon=" + gps[0] + "&lat=" + gps[1];
 
                         xhttp.open("GET", addr, true);
                         xhttp.onreadystatechange = function () {

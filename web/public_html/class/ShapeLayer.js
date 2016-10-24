@@ -178,13 +178,23 @@ ShapeLayer.prototype.report = function (coordinate, networkData) {
     this.lastVal = v;
     //this.getMinMax(this.propertyName,networkData);
 
+    var title = "Hodnota " + this.name + " je " + v + " z " + this.minMax[1];
+
     var iconFile = this.determineIcon(coordinate);
+    if (typeof (iconFile) === "object") {
+        //new interface of determineIcon function
+        if (typeof (iconFile.title) === "string") {
+            title = iconFile.title;
+        }
+        iconFile = iconFile.icon;
+    }
+
     if (typeof (v) === "undefined" || v === null) {
         return "";
     }
     if (this.icons !== false) {
         return "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
-                " title=\"Hodnota " + this.name + " je " + v + " z " + this.minMax[1] + "\"><div class=\"Value Quality\">" + v + "/" + this.minMax[1] + "</div></div>";
+                " title=\"" + title + "\"><div class=\"Value Quality\">" + v + "/" + this.minMax[1] + "</div></div>";
     } else {
         return "";
     }
