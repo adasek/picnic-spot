@@ -447,7 +447,8 @@
                             zoom: 13,
                             minZoom: 12,
                             maxZoom: 19
-                        })
+                        }),
+                        interactions: ol.interaction.defaults({altShiftDragRotate: false, pinchRotate: false})
                     });
                     for (var i = 0; i < layerArray.length; i++) {
                         if (layerArray[i].type === "gpx") {
