@@ -50,7 +50,7 @@ var DataSet = function (client, opts) {
 
     if (this.round) {
         for (var i = 0; i < this.columns.length; i++) {
-            this.columns[i] = "round(" + this.columns[i] + ")";
+            this.columns[i] = "round(" + this.columns[i] + ") AS "+this.columns[i];
         }
     }
     var columnsS = this.columns.join();
