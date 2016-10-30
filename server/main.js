@@ -66,7 +66,8 @@ var dataSources = [
     }, {
         "name": "hluk_den",
         "table": "hm_ekola_den_p",
-        "columns": ["db_lo", "db_hi"]
+        "columns": ["db_lo", "db_hi"],
+        "round": true
     }, {
         "name": "vyuziti",
         "table": "urk_ss_vyuzitizakl_p",
@@ -80,7 +81,7 @@ var dataSources = [
         "name": "znecisteni_ovzdusi",
         "table": "ovz_klima_znecovzdusi_p_shp",
         "columns": ["gridvalue"]
-        
+
     }
 ];
 
