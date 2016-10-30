@@ -18,6 +18,7 @@ name="$2"
 zipShp "http://opendata.iprpraha.cz/CUR/OVZ/OVZ_Klima_Osluneni_p/WGS_84/OVZ_Klima_Osluneni_p_shp.zip" OVZ_Klima_Osluneni_p
 zipShp "http://opendata.iprpraha.cz/CUR/HM/HM_Ekola_den_p/WGS_84/HM_Ekola_den_p_shp.zip" HM_Ekola_den_p
 zipShp "http://opendata.iprpraha.cz/CUR/URK/URK_SS_VyuzitiZakl_p/WGS_84/URK_SS_VyuzitiZakl_p_shp.zip" URK_SS_VyuzitiZakl_p
+zipShp "http://opendata.iprpraha.cz/CUR/OVZ/OVZ_Klima_ZnecOvzdusi_p/WGS_84/OVZ_Klima_ZnecOvzdusi_p_shp.zip" OVZ_Klima_ZnecOvzdusi_p_shp
 
 
 if [ 0"$1" -eq 1 ]
@@ -36,7 +37,7 @@ for f in  data/src/* #data/*.json
   continue
  fi
 #temporary
-#if [ ! "$f" = "data/src/HM_Ekola_den_p" ]
+#if [ ! "$f" = "data/src/OVZ_Klima_ZnecOvzdusi_p_shp" ]
 # then
 # continue
 #fi
