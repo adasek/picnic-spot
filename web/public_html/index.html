@@ -11,11 +11,11 @@
         <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
         <link rel="manifest" href="/manifest.json">
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-        
+
         <meta name="theme-color" content="#ffffff">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-        
+
         <script src="lib/openlayers/ol.js"></script>   
         <script src="lib/async/async.min.js"></script>   
         <script src="class/Layer.js"></script>    
@@ -126,7 +126,7 @@
             #info .Layer img, #info .Ling img{
                 max-height:50px;
             }
-            
+
             /* Mobile*/
             @media (max-width: 800px) {
                 #info {
@@ -192,7 +192,7 @@
                             4: "50_kvalita_prostredi.png",
                             5: "100_kvalita_prostredi.png"
                         }
-                    },{
+                    }, {
                         "class": "ShapeLayer",
                         "name": "Znečištění ovzduší",
                         "serverName": "znecisteni_ovzdusi",
@@ -418,7 +418,63 @@
                 }
 
 
+
                 async.parallel(myLayers, function (err, layerArray) {
+
+
+
+                    //coordinate in ESPG:900913
+                    function loadInfo(coordinate) {
+                        var gpsCoord = ol.proj.transform(coordinate, 'EPSG:900913', 'EPSG:4326');
+                        var text = "";
+                        //Fetch network data
+
+                        var xhttp = new XMLHttpRequest();
+
+                        var addr = "http://localhost:888/?lon=" + gpsCoord[0] + "&lat=" + gpsCoord[1];
+
+                        xhttp.open("GET", addr, true);
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState === 4 && this.status === 200) {
+                                var networkData = JSON.parse(this.responseText);
+
+                                for (var i = 0; i < layerArray.length; i++) {
+                                    if (ShapeLayer.prototype.isPrototypeOf(layerArray[i])) {
+                                        text += layerArray[i].report(coordinate, networkData);
+                                    } else if (typeof layerArray[i].getNearest === "function") {
+                                        text += layerArray[i].report(coordinate, networkData);
+                                    }
+                                }
+
+                                var externalLinks = [
+                                    {"address": "https://www.windyty.com/?%LAT,%LON,%ZOOM",
+                                        "title": "Síla větru",
+                                        "ico": "gfx/links/windyty.png"
+                                    },
+                                    {"address": "https://mapy.cz/turisticka?x=%LON&y=%LAT&z=%ZOOM ",
+                                        "title": "Mapy.cz",
+                                        "ico": "gfx/links/mapy.png"
+                                    },
+                                    {"address": "https://na-ovoce.cz/cs/mapa/#%ZOOM/%3LAT/%3LON",
+                                        "title": "Na Ovoce",
+                                        "ico": "gfx/links/naovoce.png"
+                                    },
+                                ]
+                                for (var k in externalLinks) {
+                                    var addr = externalLinks[k].address
+                                            .replace("%3LAT", Math.round(gpsCoord[1] * 1000) / 1000)
+                                            .replace("%3LON", Math.round(gpsCoord[0] * 1000) / 1000)
+                                            .replace("%LAT", gpsCoord[1])
+                                            .replace("%LON", gpsCoord[0])
+                                            .replace("%ZOOM", map.getView().getZoom());
+                                    text += "<div class=\"Link\"><a href=\"" + addr + "\" class=\"externalLink\" title=\"" + externalLinks[k].title + "\"><img src=\"" + externalLinks[k].ico + "\" class=\"logo\"></a></div>"
+                                }
+                                showInfo(text);
+                            }
+                        };
+                        xhttp.send();
+                    }
+
 
 
                     //RENDERING THE MAP
@@ -487,76 +543,10 @@
                     reZoom();
                     map.on('click', function (evt) {
                         var coordinate = evt.coordinate;
-                        var gps = ol.proj.transform(coordinate, 'EPSG:900913', 'EPSG:4326');
-                        var text = "";
-                        //Fetch network data
-
-
-                        var xhttp = new XMLHttpRequest();
-                        var th = this;
-
-                        var addr = "http://localhost:888/?lon=" + gps[0] + "&lat=" + gps[1];
-
-                        xhttp.open("GET", addr, true);
-                        xhttp.onreadystatechange = function () {
-                            if (this.readyState === 4 && this.status === 200) {
-                                var networkData = JSON.parse(this.responseText);
-
-                                for (var i = 0; i < layerArray.length; i++) {
-                                    if (ShapeLayer.prototype.isPrototypeOf(layerArray[i])) {
-                                        text += layerArray[i].report(coordinate, networkData);
-                                    } else if (typeof layerArray[i].getNearest === "function") {
-                                        text += layerArray[i].report(coordinate, networkData);
-                                    }
-                                }
-
-                                var externalLinks = [
-                                    {"address": "https://www.windyty.com/?%LAT,%LON,%ZOOM",
-                                        "title": "Síla větru",
-                                        "ico": "gfx/links/windyty.png"
-                                    },
-                                    {"address": "https://mapy.cz/turisticka?x=%LON&y=%LAT&z=%ZOOM ",
-                                        "title": "Mapy.cz",
-                                        "ico": "gfx/links/mapy.png"
-                                    },
-                                    {"address": "https://na-ovoce.cz/cs/mapa/#%ZOOM/%3LAT/%3LON",
-                                        "title": "Na Ovoce",
-                                        "ico": "gfx/links/naovoce.png"
-                                    },
-                                ]
-                                for (var k in externalLinks) {
-                                    var addr = externalLinks[k].address
-                                            .replace("%3LAT", Math.round(gps[1] * 1000) / 1000)
-                                            .replace("%3LON", Math.round(gps[0] * 1000) / 1000)
-                                            .replace("%LAT", gps[1])
-                                            .replace("%LON", gps[0])
-                                            .replace("%ZOOM", map.getView().getZoom());
-                                    text += "<div class=\"Link\"><a href=\"" + addr + "\" class=\"externalLink\" title=\"" + externalLinks[k].title + "\"><img src=\"" + externalLinks[k].ico + "\" class=\"logo\"></a></div>"
-                                }
-                                showInfo(text);
-                            }
-                        };
-                        xhttp.send();
-
-                        //external links
-                        /*
-                         vítr
-                         https://www.windyty.com/?50.063,14.348,15 (poslední číslo je zoom, při velkém zoomu by to mělo ukázat jako podklad mapy.cz)
-                         
-                         mapy
-                         https://mapy.cz/turisticka?x=14.3340789&y=50.0805328&z=16 (poslední číslo je opět zoom)
-                         
-                         počasí
-                         https://www.yr.no/place/Czech_Republic/Prague/Prague/ (asi jde jenom po městech, ale to  nám nevadí... je tu i vítr, ale není to tak pěkný jako u windyty, jsou tu i srážky ale ne radar - viz níže)
-                         
-                         NaOvoce
-                         https://na-ovoce.cz/cs/mapa/#17/50.08799/14.35398 (číslo za # je zoom)
-                         
-                         srážky
-                         http://portal.chmi.cz//files/portal/docs/meteo/rad/data_jsradview.html
-                         */
-
+                        loadInfo(coordinate);
                     });
+
+
                     //show some symbol on clicked position
 
                     var clickSource = new ol.source.Vector({wrapX: false});
@@ -602,9 +592,13 @@
                         positioning: "top-center"
                     });
                     map.addOverlay(popup);
-                }
-                );
-                hideInfo();
+
+
+                    //initial "click"
+                    loadInfo(ol.proj.transform([14.407533579050305, 50.09398005991346], 'EPSG:4326', 'EPSG:900913'));
+                });
+
+
                 hideAbout();
             } //end of init
 
@@ -647,7 +641,7 @@
                 }
             }
 
-            hideInfo();
+            //hideInfo();
             hideAbout();
             /*  ]]> */
         </script>
