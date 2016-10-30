@@ -75,6 +75,12 @@ var dataSources = [
         "name": "alcohol_ban",
         "table": "alcohol_ban",
         "columns": ["value"]
+    },
+    {
+        "name": "znecisteni_ovzdusi",
+        "table": "ovz_klima_znecovzdusi_p_shp",
+        "columns": ["gridvalue"]
+        
     }
 ];
 
