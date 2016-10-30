@@ -20,7 +20,7 @@ var DataSet = function (client, opts) {
     if (typeof (opts.table) === "string" && opts.table.length > 0) {
         this.table = opts.table;
     }
-    
+
     this.name = "unnamed";
     if (typeof (opts.name) === "string" && opts.name.length > 0) {
         this.name = opts.name;
@@ -35,6 +35,12 @@ var DataSet = function (client, opts) {
         this.columns = opts.columns;
     }
 
+
+    this.round = false;
+    if (typeof (opts.round) === "boolean") {
+        this.round = opts.round;
+    }
+
     /**
      * @type {pg.Client}
      */
@@ -42,6 +48,11 @@ var DataSet = function (client, opts) {
 
     this.queryName = "getQual_" + this.table;
 
+    if (this.round) {
+        for (var i = 0; i < this.columns.length; i++) {
+            this.columns[i] = "round(" + this.columns[i] + ")";
+        }
+    }
     var columnsS = this.columns.join();
     this.firstQuery = this.client.query(
             {"text": 'SELECT ' + columnsS + ' FROM ' + this.table + ' WHERE ST_Contains(geom, ST_Point($1::float,$2::float))',
