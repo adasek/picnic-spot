@@ -1,0 +1,16 @@
+
+#popup > div {
+    background-color:white;
+    padding:0.5em;
+    border-radius:1em;
+    position:relative;
+    top:2em;
+    margin:0;
+    border:2px solid black;
+}  
+
+
+#popup > div h3 {
+    margin:0;
+}
+#popup svg {height:50px;width:100%;border:1px solid black}
