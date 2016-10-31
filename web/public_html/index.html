@@ -500,9 +500,15 @@
                     if (this.readyState === 4 && this.status === 200) {
                         if (document.getElementById('overlay')) {
                             document.getElementById('overlay').style.display = "block";
-                            document.getElementById('overlay').scrollTo(0, 0);
 
                             document.getElementById('overlay_inner').innerHTML = this.responseText;
+
+                            //Scroll to top
+                            if (typeof (document.getElementById('overlay_inner').scrollTo) === "function") {
+                                document.getElementById('overlay_inner').scrollTo(0, 0);
+                            }
+                            document.getElementById('overlay_inner').scrollTop = -999;
+
                             //document.getElementById('about').onclick = hideAbout;
                             window.location.hash = overlayName;
 
@@ -525,11 +531,11 @@
 
 
             function stopPropagation(e) {
-                var event = e;
-                if (typeof (event) === "undefined") {
-                    event = window.event;
+                if (typeof (e) !== "undefined" && typeof (e.stopPropagation) === "function") {
+                    e.stopPropagation();
+                } else if (typeof window.event.stopPropagation === "function") {
+                    window.event.stopPropagation();
                 }
-                event.stopPropagation();
             }
 
             hideOverlay();
@@ -570,9 +576,12 @@
 
 
         <div class="overlay" id="overlay" onclick="hideOverlay();">
-            <div id="overlay_inner" class="overlay_inner" onclick="stopPropagation();">
+            <div id="overlay_inner" class="overlay_inner" >
             </div>
         </div>
+        <script>
+            document.getElementById("overlay_inner").onclick = stopPropagation;
+        </script>
 
     </body>
 </html>
