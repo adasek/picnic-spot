@@ -462,7 +462,7 @@
             function showInfo(htmlCode) {
                 if (document.getElementById('info')) {
                     document.getElementById('info').innerHTML = htmlCode;
-                    document.getElementById('info').style.display = "block";
+                    document.getElementById('info').style.display = "flex";
                     document.getElementById('info').onclick = hideInfo;
                 }
                 if (document.getElementById('tooltip')) {
@@ -526,9 +526,8 @@
 
         <div id="map" class="map"></div>
         <div id="popup"></div>
-        <div id="ourlogo"><p id="tooltip">Klikni do mapy</p><a href="#" onclick="toggleAbout();" id="logo_logo"><img src="gfx/logo.png"></a></div>
         <div id="toolbar">
-            <a href="#" onclick="showAbout();"><img src="gfx/logo.png" alt="Tam venku logo"></a>
+            <div id="ourlogo"><a href="#" onclick="showAbout();"><img src="gfx/logo.png" alt="Tam venku logo"></a></div>
             <div id="info"></div>
         </div>
 

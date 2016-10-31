@@ -1,29 +1,46 @@
 
-
 #toolbar {
     position:fixed;
     background-color:white;
     background-color:rgba(255,255,255,0.95);
     display:flex;
-}
-
-#toolbar img {
     height:5vmin;
 }
 
+#toolbar > #ourlogo {
+    display:block;
+    height:100%;
+}
+#ourlogo img {
+    display:block;
+    height:100%
+}
+
+
+
 #info {
-    background-color:red;
     display:flex;
     flex-direction:row;
     justify-content:space-between;
     align-items:stretch;
+    width:90%;
 }
 
 #info > div {
-    display:inline-block;
+    width:5%;
+    text-align:center;
 }
 
+#info > div  img {
+    height:100%;
+}
 
+.Layer .Value {
+    margin:0;
+    padding:0;
+    position:relative;
+    top:-0.8em;
+}
 
 
 /* default: desktop */
@@ -47,15 +64,17 @@
         left:inherit;
         min-width:240px;
         min-height:240px;
+
     }
+    /* flex magic */
+    #toolbar #info{
+        flex-wrap:wrap;
+    }
+    #info {width:100%}
     #info .Layer,#info .Link { width:20%;height:25%;}
+    #info > div img {max-width:100%;max-height:100%}
+    #info > div img { height:auto}
+    .Layer .Value {text-align:center}
+    #ourlogo img {display:none}
 }
 
-
-
-#info .Layer > .Value {
-    bottom:0;
-    width:100%;
-    background-color:rgba(255,255,255,0.9);
-    text-align:center;
-}
