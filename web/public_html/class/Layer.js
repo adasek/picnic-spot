@@ -110,7 +110,7 @@ Layer.prototype.determineIcon = function (coordinate) {
     }
 
     //var myVal = this.getValueAt(coordinate);
-    var myVal = this.lastVal;
+    var myVal = this.lastVal[1];
 
     if (typeof (this.states) === "object") {
         //NEW WAY
