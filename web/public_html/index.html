@@ -452,12 +452,23 @@
                     map.addOverlay(popup);
 
 
-                    //initial "click"
+                    //initial "click" 
                     loadInfo(ol.proj.transform([14.407533579050305, 50.09398005991346], 'EPSG:4326', 'EPSG:900913'));
                 });
 
 
                 hideOverlay();
+
+                if (typeof (window.location.hash) === "string" && window.location.hash.length > 0) {
+                    showOverlay(window.location.hash.replace("#", ""));
+                }
+
+                window.addEventListener("hashchange", function () {
+                    if (window.location.hash.length > 1) {
+                        showOverlay(window.location.hash.replace("#", ""));
+                    }
+                });
+
             } //end of init
 
             function showInfo(htmlCode) {
@@ -489,10 +500,14 @@
                     if (this.readyState === 4 && this.status === 200) {
                         if (document.getElementById('overlay')) {
                             document.getElementById('overlay').style.display = "block";
+                            document.getElementById('overlay').scrollTo(0, 0);
+
                             document.getElementById('overlay_inner').innerHTML = this.responseText;
                             //document.getElementById('about').onclick = hideAbout;
+                            window.location.hash = overlayName;
+
                         }
-                    } else {
+                    } else if (this.readyState === 4) {
                         console.error("Cannot open overlay " + overlayName);
                         console.error("Overlay download returned error code " + this.status);
                         //maybe not present?
@@ -505,11 +520,15 @@
                 if (document.getElementById('overlay')) {
                     document.getElementById('overlay').style.display = "none";
                 }
+                window.location.hash = "";
             }
 
 
             function stopPropagation(e) {
-                var event = e || window.event;
+                var event = e;
+                if (typeof (event) === "undefined") {
+                    event = window.event;
+                }
                 event.stopPropagation();
             }
 

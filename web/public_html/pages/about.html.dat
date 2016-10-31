@@ -1,187 +1,33 @@
 
-                <h1>Tamvenku.cz</h1>
-                <h2>Projekt vznikl v rámci Prague Hacks 2016</h2>
-                <p>Tým: Adam, Jana, Adéla</p>
+<h1>Tamvenku.cz</h1>
+<p>Projekt vznikl v rámci Prague Hacks 2016</p>
+                
+<p><em>TAM VENKU je krásně. Stačí se podívat z okna. A vyrazit do přírody. Není ale potřeba jezdit za město. Příroda je i ve městě. Město je příroda. Aniž bychom to tušili, tam venku se nachází tolik pěkných míst. Míst, kde si sednu, odpočinu, rozhlédnu se. Přečtu si knihu a nebo jen tak vypnu, zatímco si děti hrají na hřišti opodál. Míst, kde si můžu s přáteli opéct buřta. Aplikace si klade za cíl ukázat lidem, kde se jim bude líbit - TAM VENKU.</em></p>
 
-                <p>Cílem je nalézt v Praze místa vhodná pro piknik a poskytnout informace, které jsou pro piknik relevantní (např. vzdálenost od nejbližších veřejných toalet, zdroje pitné vody, parkoviště nebo zastávky veřejné dopravy, přítomnost veřejného osvětlení a další). V hodnocení oblasti je také zahruta kvalita životního prostředí, která se uživateli nezobrazuje. Jedná se ale například o bonitu klimatu z hlediska oslunění (mezi další patří znečištění ovzduší, hluk apod.)</p>
+<p>Myšlenka se zrodila na Prague Hacks 2016. Původně se točila kolem piknikových míst v Praze, což odrážel také název aplikace - Kam na piknik. Základem je mapa, která pomůže lidem identifikovat vhodné místo na piknik díky spojení mnoha atributů, které nás zajímají, chceme-li vyrazit „s dekou a košíkem“ do přírody. Mezi ně patří například bonita klimatu, dopravní dostupnost, přítomnosti vybavení jako jsou odpadkové koše, WC nebo veřejné osvětlení, zdroje pitné vody, lavičky a stoly. Někoho také bude zajímat přítomnost dětských hřišť, někoho jiného zase pěkný výhled do krajiny a někoho třeba, jestli si může na daném místě dát sklenku vína nebo pivo aniž by porušil „protialkoholní vyhlášku“. Tohle všechno jsou informace získané z otevřených dat, která ale doteď nebyla přehledně na jednom místě.</p>
 
-                <h3>Zdroje dat</h3>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Bonita klimatu z hlediska oslunění</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://opendata.praha.eu/dataset/ipr-bonita_klimatu_z_hlediska_osluneni" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://opendata.praha.eu/dataset/ipr-bonita_klimatu_z_hlediska_osluneni</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Studánky</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.estudanky.eu" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.estudanky.eu</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Ohniště a přenosné grily</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://portalzp.praha.eu/public/88/bf/d1/2087937_703028_piknik_mista_92016.pdf" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://portalzp.praha.eu/public/88/bf/d1/2087937_703028_piknik_mista_92016.pdf</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Zdroje pitné vody</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Lampy</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.geoportalpraha.cz/cs/opendata/7F8B74A0-0D88-43CC-9848-A06883BC34B9#.V_Cx-ztBWb8" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.geoportalpraha.cz/cs/opendata/7F8B74A0-0D88-43CC-9848-A06883BC34B9#.V_Cx-ztBWb8</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Zastávky MHD</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Sportoviště</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Parkoviště</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Toalety</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Vyhlídková místa</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Dětská hřiště</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Koše a kontejnery</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Posezení</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.openstreetmap.org" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.openstreetmap.org</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Posezení:židle</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.iprpraha.cz/zidle" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.iprpraha.cz/zidle</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Praha zelená</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://prahazelena.cz/" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://prahazelena.cz/</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Zákaz pití alkoholu</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://www.praha.eu/jnp/cz/o_meste/zivot_v_praze/bezpecnost/mapa_kde_je_v_praze_zakazano_pit_alkohol.html" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">http://www.praha.eu/jnp/cz/o_meste/zivot_v_praze/bezpecnost/mapa_kde_je_v_praze_zakazano_pit_alkohol.html</span></a></p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+<p>Atributů a ikonek na mapě je už i dnes celkem hodně a stále nás napadají nové zdroje dat, které bychom rádi přidali. Zdrojů, odkud pochází informace zobrazované v aplikaci TAM VENKU je dnes asi osm. Jejich kompletní seznam najdete níže. Pro přehlednost a udržitelnost jsme se rozhodli vytvořit jakési uživatelské filtry. Tak si bude každý moci vybrat, pouze podmnožinu atributů, které pro něj budou zajímavé. Maminky budou zajímat dětské hřiště, ale nebude je pálit, kde se nesmí pít alkohol. To třeba takové piknikáře zajímat bude. A knihomilové zase budou vyhledávat primárně klidná místa.</p>
 
-                <h3>Externí odkazy</h3>
-                <table>
-                    <tbody>
+<p>Zároveň je jisté, že dostupná data nejsou všemocná a pro doporučení opravdu pěkným míst, která za to stojí, se bude muset zapojit lidský faktor. V první fázi projektu plánujeme doporučit pro každou kategorii uživatelů vybraná místa. Časem tuto práci ale přenecháme uživatelům samotným.</p>
 
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://mapy.cz" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">mapy.cz</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://na-ovoce.cz" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">na-ovoce.cz</span></a></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><a href="http://windyty.com" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">windyty.com</span></a></p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+<p>S aplikací a jejím dalším rozvojem máme ambiciózní vizi, ale začít musíme hezky postupně.</p>
+
+<h3>Co tedy umí současná verze TAM VENKU?</h3>
+
+<p>Zobrazovat. To je celé a jakkoliv se to zdá prosté, zobrazení těch správných informací a z toho správného úhlu pohledu je celkem klíčové. Aplikaci jsme navrhli tak, aby byla uživatelsky přívětivá a přímočará. Dnes je založena na jednoduchém kliknutí do mapy (místo zájmu) a v horní liště se graficky i číselně znázorní „ohodnocení“ tohoto místa. S přidávání další funkcionality chceme být opatrní a rozvážní, abychom se stále drželi jednoduchého a intuitivního schématu. Jednoduše nechceme uživatele zastrašit žádnou komplikovaností:)</p>
+
+<h3>Jak se TAM VENKU brzy změní?</h3>
+
+<p>Kromě bodových vrstev, které dnes v aplikaci převládají (a budou přibývat), plánujeme přidat také plochy (parky a další místa „tam venku“), které by částečně po vzoru Prahy zelené poskytovaly informace je vybraných územích. Tím už se pomalu připravujeme na další fázi projektu. Ještě než se rozepíšeme o „daleké vizi“, je tu jeden zajímavý zdroj dat, který stojí za zmínku - a to přidání informace o aktuálních a plánovaných akcích (trhy, festivaly apod.), které probíhají v dané oblasti. Určitě jde o celkem rozhodující faktor, když se člověk chystá dané místo navštívit - a to v obou případech, ať už ho daná akce na místo o to více naláká, nebo naopak odradí, třeba protože vyhledává klidnější místo.</p>
+
+<h3>Jak bude vypadat TAM VENKU v budoucnu?</h3>
+
+<p>Postupně bychom rádi aplikaci rozšířili tak, aby se na vzniku obsahu podíleli samotní uživatelé a to formou tzv. crowdsourcingu, nebo-li přispíváním a vlastním sběrem dat. Protože dnešní podoba aplikace čerpá z otevřených dat, rádi bychom také něco poskytly na oplátku. Například sběrem podkladů do Open Street Map. Informováním města o využívání venkovního prostředí. Identifikací míst s potenciálem pro rozvoj. Získání informací o městském prostředí očima uživatelů. Nápadů je mnoho a jen čas ukáže, co je smysluplné a udržitelné.</p>
+
+<p>Otázka crowdsourcingu je v případě téhle aplikace celkem složitá. Důvodů je více, ale pro vysvětlení uvedeme dva. (1) Neradi bychom, aby aplikace doporučovaná místa „kontraproduktivně“ zkazila. Například, že nějaké tiché pěkné místo bude najednout překypovat lidmi. (2) Chceme zohlednit časovou složku crowdsourcovaných dat - jedno místo může vypadat naprosto jinak v různé denní doby. Takhle interpretace je celkem důležitá, a proto je potřeba data sbírat „šikovně“. Proto se rovnou nepouštíme po hlavě do neřízeného sběru, ale budeme celou metodiku crowdsourcingu TAM VENKU ještě chvíli promýšlet:)</p>
 
 
-                <h3>Užitá multimedia</h3>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Ikony</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="https://thenounproject.com/" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">https://thenounproject.com/</span></a></p>
-
-                                <p><span style="background-color:transparent; color:#000000">Authors: Martin Vanco, Ivan Pletenac, parkjisun, Creative Stall, Sergej Demushkin, Giuditta Valentina Gentile, Pierre-Luc Auclair, Carla Dias, Edward Boatman</span></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:bottom">
-                                <p><span style="background-color:transparent; color:#000000">Font</span></p>
-                            </td>
-                            <td style="vertical-align:bottom">
-                                <p><a href="https://fonts.google.com/specimen/Catamaran?selection.family=Catamaran" style="text-decoration:none;"><span style="background-color:transparent; color:#1155cc">https://fonts.google.com/specimen/Catamaran?selection.family=Catamaran</span></a></p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+<ul>
+<li><a href="#zdroje">Zdroje dat</a></li>
+<li><a href="#autori">Autoři</a></li>
+</ul>
