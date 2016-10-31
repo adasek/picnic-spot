@@ -1,34 +1,44 @@
 
 
-#info {
+#toolbar {
     position:fixed;
     background-color:white;
     background-color:rgba(255,255,255,0.95);
+    display:flex;
 }
-#info .Layer,#info .Link {position:relative;float:left;}
+
+#toolbar img {
+    height:5vmin;
+}
+
+#info {
+    background-color:red;
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:stretch;
+}
+
+#info > div {
+    display:inline-block;
+}
+
 
 
 
 /* default: desktop */
-#info {
+#toolbar {
     width:100%;
     top:0;
     left:0;
     border-radius:0 0 2vh 2vh;
     padding-bottom:1em;
 }
-#info .Layer,#info .Link {
-    width:5%;
-    height:10vmin;
-    max-height:65px;
-}
-#info .Layer img, #info .Ling img{
-    max-height:50px;
-}
+
 
 /* Mobile*/
 @media (max-width: 800px) {
-    #info {
+    #toolbar {
         border-radius: 2vh 0 0 2vh;
         width:50vw;
         height:50vh;
@@ -48,20 +58,4 @@
     width:100%;
     background-color:rgba(255,255,255,0.9);
     text-align:center;
-}
-.Layer {text-align:center}
-.Layer > img {
-    height:80%;
-    top:0;
-    display:block;
-    margin:0 auto;
-
-}
-
-.externalLink .logo{
-    position:absolute;
-    height:100%;
-    top:0;
-    left:0;
-    opacity:0.8;
 }
