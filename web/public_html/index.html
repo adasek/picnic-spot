@@ -457,10 +457,12 @@
                 });
 
 
-                hideOverlay();
 
+                console.log(JSON.stringify(window.location));
                 if (typeof (window.location.hash) === "string" && window.location.hash.length > 0) {
                     showOverlay(window.location.hash.replace("#", ""));
+                } else {
+                    hideOverlay();
                 }
 
                 window.addEventListener("hashchange", function () {
@@ -538,7 +540,6 @@
                 }
             }
 
-            hideOverlay();
             /*  ]]> */
         </script>
 
