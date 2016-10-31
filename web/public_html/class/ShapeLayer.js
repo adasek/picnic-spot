@@ -189,13 +189,20 @@ ShapeLayer.prototype.report = function (coordinate, networkData) {
         iconFile = iconFile.icon;
     }
 
-    if (typeof (v) === "undefined" || v === null) {
+    if ((typeof (v) === "undefined" || v === null) && !this.showNull) {
         return "";
     }
+
     if (this.icons !== false) {
-        return "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
-                " title=\"" + title + "\"><div class=\"Value Quality\">" + v + "/" + this.minMax[1] + "</div></div>";
+        var ret = "<div class=\"PointLayer Layer\"><img src=\"gfx/" + iconFile + "\" " +
+                " title=\"" + title + "\">";
+        if (!this.dontshowmeters) {
+            ret += "<div class=\"Value Quality\">" + v + "/" + this.minMax[1] + "</div>";
+        }
+
+        ret += "</div>";
+        return ret;
     } else {
-        return "";
+        return "xyz";
     }
 };

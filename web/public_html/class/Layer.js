@@ -44,6 +44,9 @@ var Layer = function (opts) {
     if (typeof (opts.dontshowmeters) === "boolean") {
         this.dontshowmeters = opts.dontshowmeters;
     }
+    if (typeof (opts.showNull) === "boolean") {
+        this.showNull = opts.showNull;
+    }
 
 };
 
@@ -113,22 +116,31 @@ Layer.prototype.determineIcon = function (coordinate) {
     var myVal = 999999;
     if (this.lastVal !== null && typeof (this.lastVal) !== "undefined" && Array.isArray(this.lastVal)) {
         myVal = this.lastVal[1];
+    } else if (this.lastVal !== null && typeof (this.lastVal) !== "undefined") {
+        myVal = this.lastVal;
     }
 
     if (typeof (this.states) === "object") {
         //NEW WAY
         var myState = null;
         var myMin = 999999;
+
+        //Choose default
         for (var i = 0; i < this.states.length; i++) {
-            if (typeof (this.states[i].maxVal) === "number" && this.states[i].maxVal > myVal && myMin > this.states[i].maxVal) {
-                //prioritized is anything with maxVal defined (lowest acceptable)
-                myMin = this.states.maxVal;
-                myState = this.states[i];
-            } else if (typeof (this.states[i].maxVal) !== "number" && myState === null) {
-                //item without maxVal is default
+            if (this.states[i].default) {
                 myState = this.states[i];
             }
         }
+        console.log(this.name + ":" + myVal);
+        //choose interval-like
+        for (var i = 0; i < this.states.length; i++) {
+            if (typeof (this.states[i].maxVal) === "number" && this.states[i].maxVal >= myVal && myMin > this.states[i].maxVal) {
+                //prioritized is anything with maxVal defined (lowest acceptable)
+                myMin = this.states.maxVal;
+                myState = this.states[i];
+            }
+        }
+        console.log(JSON.stringify(myState));
         return myState; //Returns Object!
 
     } else {
