@@ -1,16 +1,19 @@
 
-#popup > div {
-    background-color:white;
-    padding:0.5em;
-    border-radius:1em;
-    position:relative;
-    top:2em;
-    margin:0;
-    border:2px solid black;
-}  
-
-
-#popup > div h3 {
-    margin:0;
+.overlay {
+    position:fixed;
+    height:100%;
+    width:100%;
+    background-color:rgba(0,0,0,0.2);
 }
-#popup svg {height:50px;width:100%;border:1px solid black}
+.overlay_inner {
+    position:absolute;
+    top:10%;
+    width:80%;
+    left:10%;
+    height:80%;
+    background-color:white;
+    overflow-y:scroll;
+    padding:2vmin;
+    border-radius:3vmin;
+}
+
