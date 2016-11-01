@@ -1,5 +1,5 @@
 var config = {
-    "serverAddress": "http://adasek.cz:888/",
+    "serverAddress": "http://adasek.cz:443/",
     "ga":false
 
 };
