@@ -81,7 +81,7 @@ PointLayer.prototype.getVector = function () {
             poiImage = new ol.style.Style({
                 image: new ol.style.Icon({src: "gfx/" + this.poiIco,
                     size: [208, 208],
-                    scale: 0.25
+                    scale: 0.15
                 })
             })
         }
